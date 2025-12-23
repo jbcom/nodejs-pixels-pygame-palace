@@ -1,190 +1,197 @@
-# Quickstart
+# Quick Start
 
-Create your first TypeScript game in 5 minutes!
+Build your first TypeScript project in minutes!
 
-## Your First Game: Bouncing Ball
+## Your First TypeScript Code
 
-Let's create a simple bouncing ball game to learn the basics.
-
-### Step 1: Start the Tutorial
-
-Launch the Strata TypeScript Tutor and meet Pixel, your guide. Pixel will walk you through the interface and help you choose what to build.
-
-### Step 2: Understand the Code
-
-Here's a simple bouncing ball in TypeScript with Strata:
+Let's start with the basics—declaring typed variables:
 
 ```typescript
-// Import Strata game engine
-import { Game, Sprite, Vector2 } from '@strata/engine';
+// TypeScript adds types to JavaScript
+const playerName: string = "Hero";
+const health: number = 100;
+const isAlive: boolean = true;
 
-// Create a new game
-const game = new Game({
-  width: 800,
-  height: 600,
-  title: 'My First Game'
-});
+console.log(`${playerName} has ${health} HP`);
+```
 
-// Create a ball sprite
-const ball = new Sprite({
-  x: 400,
-  y: 300,
-  radius: 20,
-  color: '#FF6B6B'
-});
+Notice how each variable has a type annotation (`: string`, `: number`, `: boolean`). TypeScript uses these to catch errors before your code runs!
 
-// Ball velocity
-let velocity = new Vector2(5, 3);
+## Creating a Simple Class
 
-// Game update loop
-game.onUpdate(() => {
-  // Move the ball
-  ball.x += velocity.x;
-  ball.y += velocity.y;
+Classes are blueprints for creating objects:
+
+```typescript
+class Player {
+  name: string;
+  health: number;
   
-  // Bounce off walls
-  if (ball.x <= 20 || ball.x >= 780) {
-    velocity.x *= -1;
+  constructor(name: string) {
+    this.name = name;
+    this.health = 100;
   }
-  if (ball.y <= 20 || ball.y >= 580) {
-    velocity.y *= -1;
+  
+  takeDamage(amount: number): void {
+    this.health -= amount;
+    console.log(`${this.name} took ${amount} damage!`);
   }
-});
-
-// Start the game!
-game.start();
-```
-
-### Step 3: Key Concepts Learned
-
-From this simple example, you've learned:
-
-- **Variables**: `velocity` stores the ball's direction and speed
-- **Types**: TypeScript knows `velocity` is a `Vector2`
-- **Functions**: `game.onUpdate()` runs every frame
-- **Conditionals**: `if` statements detect wall collisions
-
-## Building Different Game Types
-
-### Platformer Basics
-
-```typescript
-// Player with gravity and jumping
-const player = new Player({
-  x: 100,
-  y: 400,
-  controls: 'wasd' // Built-in keyboard support
-});
-
-// Add gravity
-player.addComponent(new Gravity({ strength: 0.5 }));
-
-// Add jump ability
-player.addComponent(new Jump({ 
-  power: 12,
-  key: 'space'
-}));
-```
-
-### RPG Character
-
-```typescript
-// Create an RPG character with stats
-const hero = new Character({
-  name: 'Adventurer',
-  sprite: 'hero_idle',
-  stats: {
-    health: 100,
-    mana: 50,
-    attack: 15,
-    defense: 10
+  
+  isAlive(): boolean {
+    return this.health > 0;
   }
-});
+}
 
-// Add movement
-hero.addComponent(new TopDownMovement({ speed: 200 }));
+const hero = new Player("Hero");
+hero.takeDamage(25);
+console.log(`Health: ${hero.health}`); // 75
 ```
 
-### Space Shooter
+## Working with Interfaces
+
+Interfaces define the shape of objects:
 
 ```typescript
-// Spaceship with shooting
-const ship = new Ship({
-  x: 400,
-  y: 500,
-  sprite: 'spaceship'
-});
-
-// Shooting on spacebar
-game.onKeyPress('space', () => {
-  const bullet = new Bullet({
-    x: ship.x,
-    y: ship.y - 20,
-    velocity: new Vector2(0, -10)
-  });
-  game.addSprite(bullet);
-});
-```
-
-## TypeScript Features You'll Learn
-
-### 1. Type Annotations
-
-```typescript
-// TypeScript knows these types
-let score: number = 0;
-let playerName: string = 'Hero';
-let isPlaying: boolean = true;
-```
-
-### 2. Interfaces
-
-```typescript
-// Define the shape of game objects
-interface Enemy {
+interface Position {
   x: number;
   y: number;
-  health: number;
-  attack(): void;
 }
+
+interface Entity {
+  id: string;
+  name: string;
+  position: Position;
+  move(dx: number, dy: number): void;
+}
+
+const enemy: Entity = {
+  id: "enemy-1",
+  name: "Goblin",
+  position: { x: 0, y: 0 },
+  move(dx, dy) {
+    this.position.x += dx;
+    this.position.y += dy;
+  }
+};
 ```
 
-### 3. Classes
+## Building with Strata
+
+The Strata library makes 3D graphics easy. Here's a simple terrain:
 
 ```typescript
-// Object-oriented game entities
-class Player extends Sprite {
-  health: number = 100;
+import { Canvas } from '@react-three/fiber';
+import { Terrain, Water, Sky } from '@jbcom/strata/components';
+
+function Scene() {
+  return (
+    <Canvas camera={{ position: [0, 50, 100] }}>
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[10, 10, 5]} />
+      
+      {/* Procedural terrain */}
+      <Terrain
+        size={200}
+        resolution={128}
+        maxHeight={20}
+        seed={42}
+      />
+      
+      {/* Water plane */}
+      <Water
+        size={200}
+        position={[0, 5, 0]}
+      />
+      
+      {/* Dynamic sky */}
+      <Sky
+        turbidity={10}
+        rayleigh={2}
+      />
+    </Canvas>
+  );
+}
+
+export default Scene;
+```
+
+## Using Generics
+
+Generics let you write reusable code:
+
+```typescript
+// A generic container that works with any type
+class Container<T> {
+  private items: T[] = [];
   
-  takeDamage(amount: number) {
-    this.health -= amount;
-    if (this.health <= 0) {
-      this.die();
-    }
+  add(item: T): void {
+    this.items.push(item);
+  }
+  
+  getAll(): T[] {
+    return [...this.items];
+  }
+  
+  find(predicate: (item: T) => boolean): T | undefined {
+    return this.items.find(predicate);
+  }
+}
+
+// Use with different types
+const inventory = new Container<string>();
+inventory.add("Sword");
+inventory.add("Shield");
+
+const scores = new Container<number>();
+scores.add(100);
+scores.add(250);
+```
+
+## Async/Await with TypeScript
+
+Handle asynchronous operations cleanly:
+
+```typescript
+interface UserData {
+  id: string;
+  name: string;
+  level: number;
+}
+
+async function loadUser(userId: string): Promise<UserData> {
+  const response = await fetch(`/api/users/${userId}`);
+  
+  if (!response.ok) {
+    throw new Error(`Failed to load user: ${response.statusText}`);
+  }
+  
+  return response.json();
+}
+
+// Usage
+async function main() {
+  try {
+    const user = await loadUser("user-123");
+    console.log(`Welcome back, ${user.name}!`);
+  } catch (error) {
+    console.error("Could not load user:", error);
   }
 }
 ```
 
-### 4. Generics
+## Next Steps
 
-```typescript
-// Flexible, type-safe collections
-const inventory = new Inventory<Item>();
-inventory.add(new Sword());
-inventory.add(new Potion());
-```
+Now that you've seen the basics, try:
 
-## What's Next?
+1. **Start the interactive lessons** - Launch the tutor and follow Pixel through the curriculum
+2. **Experiment in the playground** - Try modifying the examples above
+3. **Build a project** - Apply what you've learned to create something unique
 
-1. **Explore Lessons**: Work through the interactive lessons with Pixel
-2. **Build Projects**: Create complete games using templates
-3. **Customize**: Make games unique with your own sprites and logic
-4. **Share**: Export and share your creations
+### Recommended Learning Path
 
-## Resources
+1. **Lesson 1**: TypeScript Basics - Variables, types, and expressions
+2. **Lesson 2**: Functions - Parameters, return types, and arrow functions
+3. **Lesson 3**: Arrays - Collections and iteration
+4. **Lesson 4**: Classes - Object-oriented programming
+5. **Lesson 5**: Building Projects - Put it all together
 
-- [Strata Engine API](../api/index.rst) - Full API reference
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/) - Official TypeScript docs
-- [Contributing](../development/contributing.md) - Help improve the tutor
-
-Happy coding! 🎮
+Happy coding! 🚀

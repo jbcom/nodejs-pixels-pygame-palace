@@ -1,100 +1,104 @@
 # Installation
 
-Get started with Strata TypeScript Tutor in minutes!
+Get started with Strata TypeScript Tutor in just a few minutes.
 
-## Requirements
+## Prerequisites
 
-- Node.js 18+ (recommended: 20 LTS)
-- npm 9+ or pnpm 8+
-- A modern web browser (Chrome, Firefox, Safari, Edge)
+- **Node.js** 20.x or later
+- **pnpm** 9.x or later (recommended)
 
-## Quick Start (Recommended)
+### Installing pnpm
 
-The easiest way to start learning is to visit the hosted version:
+```bash
+npm install -g pnpm
+```
 
-**[Start Learning TypeScript Now →](https://typescript-tutor.strata.dev)**
+## Quick Start (Online)
+
+Visit [typescript-tutor.strata.dev](https://typescript-tutor.strata.dev) to start learning immediately—no installation required!
 
 ## Local Development
 
-Want to run it locally or contribute?
-
-### Using npm
+### 1. Clone the Repository
 
 ```bash
-# Clone the repository
 git clone https://github.com/jbcom/strata.git
 cd strata/typescript-tutor
-
-# Install dependencies
-npm install
-
-# Start the development server
-npm run dev
 ```
 
-### Using pnpm (Preferred)
+### 2. Install Dependencies
 
 ```bash
-# Clone the repository
-git clone https://github.com/jbcom/strata.git
-cd strata/typescript-tutor
-
-# Install dependencies
 pnpm install
+```
 
-# Start the development server
+### 3. Start the Development Server
+
+```bash
 pnpm dev
 ```
 
-### Open in Browser
+Open [http://localhost:5000](http://localhost:5000) in your browser.
 
-Once the server starts, open [http://localhost:5000](http://localhost:5000) in your browser.
+## Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `pnpm dev` | Start development server with hot reload |
+| `pnpm build` | Build for production |
+| `pnpm start` | Run production server |
+| `pnpm check` | TypeScript type checking |
+| `pnpm lint` | Run Biome linter |
+| `pnpm lint:fix` | Auto-fix lint issues |
+| `pnpm format` | Format code with Biome |
+| `pnpm test` | Run unit tests |
+| `pnpm test:e2e` | Run end-to-end tests |
+
+## Project Structure
+
+```
+typescript-tutor/
+├── client/               # React frontend
+│   └── src/
+│       ├── components/   # UI components
+│       ├── hooks/        # Custom hooks
+│       ├── lib/          # Utilities
+│       └── pages/        # Page components
+├── server/               # Express backend
+├── shared/               # Shared types
+├── public/               # Static assets
+│   ├── api/static/       # Lesson data
+│   ├── dialogue/         # Mascot dialogue
+│   └── assets/           # Sprites and sounds
+├── tests/                # Test files
+└── docs/                 # Documentation
+```
 
 ## What's Included
 
-The Strata TypeScript Tutor includes:
+### Monaco Editor
+The same code editor that powers VS Code, with full TypeScript support including:
+- Syntax highlighting
+- Autocomplete
+- Error detection
+- IntelliSense
 
-- **Interactive Lessons** - Learn TypeScript fundamentals through game development
-- **Live Code Editor** - Monaco editor with TypeScript support
-- **Instant Preview** - See your games run in real-time
-- **Pixel Mascot** - Your friendly guide through the learning journey
-- **Strata Engine** - Full access to the Strata game development library
+### Strata Integration
+The [@jbcom/strata](https://www.npmjs.com/package/@jbcom/strata) library provides:
+- Procedural terrain generation
+- Water and reflection effects
+- Vegetation systems
+- Atmospheric effects
 
-## System Requirements
-
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| Node.js | 18.x | 20.x LTS |
-| RAM | 4 GB | 8 GB |
-| Browser | Chrome 90+ | Latest Chrome/Firefox |
-| Screen | 1280x720 | 1920x1080 |
-
-## Troubleshooting
-
-### Port Already in Use
-
-```bash
-# Use a different port
-PORT=3000 npm run dev
-```
-
-### Dependencies Not Installing
-
-```bash
-# Clear cache and reinstall
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### TypeScript Errors
-
-```bash
-# Check for type errors
-npm run check
-```
+### Interactive Lessons
+Five progressive lessons covering:
+1. TypeScript Basics
+2. Functions & Logic
+3. Arrays & Collections
+4. Classes & Objects
+5. Building Complete Projects
 
 ## Next Steps
 
-- Read the [Quickstart Guide](./quickstart.md) to create your first game
-- Explore the [API Reference](../api/index.rst) for Strata engine details
-- Join our community and share what you build!
+- Continue to the [Quick Start Guide](./quickstart.md) to build your first project
+- Explore the [API Reference](../api/) for detailed documentation

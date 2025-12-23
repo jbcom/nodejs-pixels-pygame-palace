@@ -4,135 +4,103 @@ Thank you for your interest in contributing to Strata TypeScript Tutor!
 
 ## Development Setup
 
+### Prerequisites
+
+- Node.js 20.x or later
+- pnpm 9.x or later
+
+### Getting Started
+
 ```bash
 # Clone the repository
 git clone https://github.com/jbcom/strata.git
 cd strata/typescript-tutor
 
-# Install dependencies (pnpm preferred)
+# Install dependencies
 pnpm install
 
 # Start development server
 pnpm dev
 ```
 
-## Project Structure
+## Code Standards
 
-```
-typescript-tutor/
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── lib/            # Utility libraries
-│   │   └── pages/          # Page components
-│   └── public/             # Static assets
-├── server/                 # Express backend
-│   ├── index.ts           # Server entry point
-│   ├── routes.ts          # API routes
-│   └── storage.ts         # Data storage
-├── shared/                 # Shared types
-├── public/
-│   ├── api/static/        # Static API data
-│   │   └── lessons.json   # Lesson content
-│   └── dialogue/pixel/    # Pixel dialogue files
-├── docs/                   # Documentation
-└── tests/                  # Test files
+### TypeScript
+
+We use strict TypeScript. Follow these guidelines:
+
+```typescript
+// ✅ Good: Use explicit types for function parameters
+function greet(name: string): string {
+  return `Hello, ${name}!`;
+}
+
+// ✅ Good: Use interfaces for object shapes
+interface User {
+  id: string;
+  name: string;
+  email?: string;
+}
+
+// ✅ Good: Use unknown instead of any
+function processData(data: unknown): void {
+  if (typeof data === 'string') {
+    console.log(data.toUpperCase());
+  }
+}
+
+// ❌ Bad: Avoid any
+function badExample(data: any): any {
+  return data;
+}
 ```
 
-## Running Tests
+### Linting & Formatting
+
+We use **Biome** (not ESLint/Prettier):
 
 ```bash
-# Run all tests
-pnpm test
-
-# Run with coverage
-pnpm test --coverage
-
-# Run specific test file
-pnpm test client/src/lib/__tests__/specific.test.ts
-
-# Type checking
-pnpm check
-```
-
-## Code Style
-
-This project uses:
-
-- **ESLint** for linting
-- **Prettier** for formatting
-- **TypeScript** strict mode
-
-```bash
-# Check linting
+# Check for issues
 pnpm lint
 
 # Auto-fix issues
-pnpm lint --fix
+pnpm lint:fix
 
 # Format code
-npx prettier --write .
+pnpm format
 ```
 
-## Making Changes
+### Testing
 
-### 1. Create a Branch
-
-```bash
-git checkout -b feat/your-feature-name
-```
-
-### 2. Make Your Changes
-
-Follow these guidelines:
-
-- Write TypeScript with strict types
-- Add tests for new functionality
-- Update documentation as needed
-- Keep commits focused and atomic
-
-### 3. Test Your Changes
+We use **Vitest** for unit tests and **Playwright** for E2E tests:
 
 ```bash
-# Run type checker
-pnpm check
-
-# Run linter
-pnpm lint
-
-# Run tests
+# Run unit tests
 pnpm test
+
+# Run with coverage
+pnpm test:coverage
+
+# Run E2E tests
+pnpm test:e2e
 ```
 
-### 4. Commit Your Changes
+## Project Structure
 
-Use conventional commits:
-
-```bash
-# Features
-git commit -m "feat(lessons): add async/await lesson"
-
-# Bug fixes
-git commit -m "fix(editor): resolve syntax highlighting issue"
-
-# Documentation
-git commit -m "docs: update quickstart guide"
-
-# Refactoring
-git commit -m "refactor(wizard): simplify dialogue engine"
-
-# Tests
-git commit -m "test(grading): add edge case coverage"
 ```
-
-### 5. Submit Pull Request
-
-1. Push your branch
-2. Create a PR against `main`
-3. Fill out the PR template
-4. Wait for CI checks to pass
-5. An AI agent or maintainer will review
+├── client/src/
+│   ├── components/     # React components
+│   ├── hooks/          # Custom hooks
+│   ├── lib/            # Utilities
+│   ├── pages/          # Route pages
+│   └── types/          # Type definitions
+├── server/             # Express backend
+├── shared/             # Shared types
+├── public/
+│   ├── api/static/     # Lesson data
+│   └── dialogue/       # Yarn dialogue
+└── tests/              # Test files
+```
 
 ## Adding New Lessons
 
@@ -140,92 +108,97 @@ Lessons are defined in `public/api/static/lessons.json`:
 
 ```json
 {
-  "id": "lesson-new",
-  "title": "Lesson Title",
-  "description": "Brief description",
-  "order": 10,
-  "intro": "Welcome message from Pixel",
-  "learningObjectives": [
-    "Objective 1",
-    "Objective 2"
-  ],
-  "goalDescription": "What students will achieve",
+  "id": "lesson-6",
+  "title": "Advanced Types",
+  "description": "Master TypeScript's type system",
+  "order": 6,
   "content": {
-    "introduction": "Lesson intro text",
+    "introduction": "Let's explore advanced type features...",
     "steps": [
       {
         "id": "step-1",
-        "title": "Step Title",
-        "description": "What to do",
-        "initialCode": "// Starting code",
-        "solution": "// Solution code",
-        "hints": ["Hint 1", "Hint 2"],
-        "tests": [/* test cases */]
+        "title": "Union Types",
+        "description": "Combine multiple types",
+        "initialCode": "// Your starting code",
+        "solution": "// The solution",
+        "hints": ["Hint 1", "Hint 2"]
       }
     ]
-  },
-  "prerequisites": ["lesson-1"],
-  "difficulty": "Beginner",
-  "estimatedTime": 20
+  }
 }
 ```
 
+### Lesson Guidelines
+
+1. **Progressive Complexity**: Start simple, build up
+2. **Working Examples**: All code must compile
+3. **Clear Explanations**: Avoid jargon
+4. **Practical Applications**: Show real-world usage
+
 ## Updating Dialogue
 
-Dialogue files use Yarn Spinner format in `public/dialogue/pixel/`:
+Dialogue files use [Yarn Spinner](https://yarnspinner.dev/) format:
 
 ```yarn
-title: MyDialogue
+title: Welcome
 ---
-Pixel: Welcome to this lesson! 🎮
-Pixel: Ready to learn TypeScript?
--> Let's do it!
-    <<jump StartLearning>>
--> Tell me more
-    Pixel: TypeScript adds types to JavaScript...
-    <<jump StartLearning>>
+Pixel: Welcome to TypeScript Tutor! 🎮
+Pixel: I'm Pixel, your guide on this journey.
+-> Start learning!
+    <<jump FirstLesson>>
+-> Tell me more about TypeScript
+    <<jump AboutTypeScript>>
 ===
 ```
 
-## Architecture Overview
+### Dialogue Guidelines
 
-### Frontend (React + Vite)
+1. Keep Pixel friendly and encouraging
+2. Use TypeScript/Strata terminology
+3. Avoid Python/Pygame references
+4. Test dialogue flow thoroughly
 
-- **UniversalWizard**: Main wizard component with Pixel
-- **WizardDialogueEngine**: Processes Yarn dialogue
-- **MonacoEditor**: TypeScript code editing
-- **GameCanvas**: Live game preview
+## Commit Messages
 
-### Backend (Express)
+Use [Conventional Commits](https://www.conventionalcommits.org/):
 
-- Serves static files and API
-- Manages user progress
-- No database required (localStorage)
+```bash
+# Feature
+git commit -m "feat(lessons): add generics tutorial"
 
-### Strata Integration
+# Bug fix
+git commit -m "fix(wizard): handle null game type"
 
-Games use the Strata engine for:
+# Documentation
+git commit -m "docs: update API reference"
 
-- Canvas rendering
-- Input handling
-- Game loop management
-- Sprite/animation systems
+# Refactor
+git commit -m "refactor(components): simplify wizard logic"
+```
 
-## Pull Request Guidelines
+## Pull Request Process
 
-- PRs should focus on one concern
-- Include tests for new features
-- Update relevant documentation
-- Follow existing code patterns
-- Ensure CI passes
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feat/my-feature`
+3. Make your changes
+4. Run all checks: `pnpm check && pnpm lint && pnpm test`
+5. Commit with conventional commit message
+6. Push and create a Pull Request
+
+### PR Checklist
+
+- [ ] TypeScript compiles (`pnpm check`)
+- [ ] Biome passes (`pnpm lint`)
+- [ ] Tests pass (`pnpm test`)
+- [ ] Documentation updated if needed
+- [ ] No console.log statements
+- [ ] No `any` types
 
 ## Getting Help
 
-- Check existing issues first
-- Use discussions for questions
-- Tag issues appropriately
-- Include reproduction steps for bugs
+- **Issues**: [GitHub Issues](https://github.com/jbcom/strata/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/jbcom/strata/discussions)
 
-## Recognition
+## License
 
-All contributors are recognized in our CONTRIBUTORS.md file. Thank you for helping make TypeScript learning fun! 🎉
+By contributing, you agree that your contributions will be licensed under the MIT License.

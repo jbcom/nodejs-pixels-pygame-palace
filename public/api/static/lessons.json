@@ -217,9 +217,7 @@
               "expectedOutput": "Filtered and searched items",
               "description": "Should use array methods effectively",
               "astRules": {
-                "requiredConstructs": [
-                  { "type": "method_call", "name": "filter", "minCount": 1 }
-                ]
+                "requiredConstructs": [{ "type": "method_call", "name": "filter", "minCount": 1 }]
               }
             }
           ]

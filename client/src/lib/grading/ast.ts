@@ -1,23 +1,23 @@
 export async function validateAst(
-  code: string, 
-  astRules: any[] | undefined, 
+  code: string,
+  astRules: any[] | undefined,
   pyodide: any
 ): Promise<{ passed: boolean; errors: string[] }> {
   if (!pyodide || !astRules || astRules.length === 0) {
-    console.log("🔍 AST validation skipped: no pyodide or astRules");
+    console.log('🔍 AST validation skipped: no pyodide or astRules');
     return { passed: true, errors: [] };
   }
 
-  console.log("🔍 Starting AST validation with:", { 
-    code: code.substring(0, 100) + (code.length > 100 ? "..." : ""), 
-    astRules 
+  console.log('🔍 Starting AST validation with:', {
+    code: code.substring(0, 100) + (code.length > 100 ? '...' : ''),
+    astRules,
   });
 
   try {
     // Convert JavaScript astRules to Python safely
-    pyodide.globals.set("js_ast_rules", astRules);
-    pyodide.globals.set("js_code", code);
-    
+    pyodide.globals.set('js_ast_rules', astRules);
+    pyodide.globals.set('js_code', code);
+
     // Use Python's ast module to parse the code with better error handling
     const parseResult = pyodide.runPython(`
       import ast
@@ -77,15 +77,14 @@ export async function validateAst(
 
     const errors = JSON.parse(parseResult);
     const passed = errors.length === 0;
-    
-    console.log("🔍 AST validation completed:", { passed, errors });
+
+    console.log('🔍 AST validation completed:', { passed, errors });
     return { passed, errors };
-    
   } catch (error) {
-    console.error("🚨 AST validation error:", error);
-    return { 
-      passed: false, 
-      errors: [`AST validation failed: ${error instanceof Error ? error.message : String(error)}`]
+    console.error('🚨 AST validation error:', error);
+    return {
+      passed: false,
+      errors: [`AST validation failed: ${error instanceof Error ? error.message : String(error)}`],
     };
   }
 }
