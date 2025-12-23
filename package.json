@@ -6,7 +6,6 @@
   "repository": {
     "type": "git",
     "url": ""
-    "directory": "typescript-tutor"
   },
   "homepage": "https://typescript-tutor.strata.dev",
   "keywords": [
