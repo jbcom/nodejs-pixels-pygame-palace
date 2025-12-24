@@ -1,0 +1,31 @@
+# Repository settings - Node.js ecosystem
+# Inherits from organization .github repository
+# Only overrides language-specific configurations
+
+# Inherit all settings from organization .github repository
+_extends: .github
+
+# Node.js-specific overrides
+rulesets:
+  - name: PRs
+    target: branch
+    enforcement: active
+    conditions:
+      ref_name:
+        include: []
+        exclude:
+          - refs/heads/main
+    bypass_actors: []
+    rules:
+      - type: copilot_code_review
+        parameters:
+          review_draft_pull_requests: false
+          review_on_push: true
+      - type: copilot_code_review_analysis_tools
+        parameters:
+          tools:
+            - name: "CodeQL"
+            - name: "ESLint"
+      - type: code_quality
+        parameters:
+          severity: errors
