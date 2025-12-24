@@ -98,11 +98,9 @@ function App() {
     <AppErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <>
-            <Toaster />
-            <Router />
-            <PixelPresence onNavigate={setLocation} currentPath={location} />
-          </>
+          <Toaster />
+          <Router />
+          <PixelPresence onNavigate={setLocation} currentPath={location} />
         </TooltipProvider>
       </QueryClientProvider>
     </AppErrorBoundary>

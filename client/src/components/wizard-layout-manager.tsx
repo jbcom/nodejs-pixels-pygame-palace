@@ -7,7 +7,7 @@ import GameProgressSidebar from './game-progress-sidebar';
 import PixelMenu from './pixel-menu';
 import { CenteredAvatar, LandscapeAvatar, PortraitAvatar } from './wizard-avatar-display';
 import { ANIMATIONS, EDGE_SWIPE_CONFIG, ICON_SIZES, STYLES } from './wizard-constants';
-import { DialogueBox, DialogueText } from './wizard-dialogue-engine';
+import { DialogueBox } from './wizard-dialogue-engine';
 import WizardOptionHandler, { ContinueButton } from './wizard-option-handler';
 import type {
   DeviceState,

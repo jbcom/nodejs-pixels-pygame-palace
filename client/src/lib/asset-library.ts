@@ -405,7 +405,7 @@ def init_3d(width, height):
 }
 
 // Function to create an asset showcase component
-export function createAssetShowcase(assets: GameAsset[]): string {
+export function createAssetShowcase(_assets: GameAsset[]): string {
   return `
 # Asset Showcase - Display all loaded assets
 def show_assets(screen, assets):

@@ -1,15 +1,5 @@
 import { motion } from 'framer-motion';
-import {
-  AlertTriangle,
-  BookOpen,
-  Bug,
-  Code2,
-  Home,
-  Lightbulb,
-  MessageCircle,
-  RefreshCw,
-  Shield,
-} from 'lucide-react';
+import { AlertTriangle, Bug, Code2, Home, Lightbulb, MessageCircle, RefreshCw } from 'lucide-react';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';

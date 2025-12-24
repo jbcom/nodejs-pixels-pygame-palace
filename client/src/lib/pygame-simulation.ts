@@ -22,7 +22,7 @@ let canvasContext: CanvasRenderingContext2D | null = null;
 let frameBuffer: DrawCommand[] = [];
 let isRenderingActive = false;
 let currentFPS = 60;
-let lastFrameTime = 0;
+let _lastFrameTime = 0;
 
 // Enhanced Surface class with real rendering capabilities
 class RenderingSurface {
@@ -30,7 +30,7 @@ class RenderingSurface {
   public height: number;
   public size: [number, number];
   public isMainSurface: boolean;
-  private imageData: ImageData | null = null;
+  public imageData: ImageData | null = null;
 
   constructor(width = 100, height = 100, isMainSurface = false) {
     this.width = width;
@@ -46,7 +46,7 @@ class RenderingSurface {
         if (ctx) {
           this.imageData = ctx.createImageData(width, height);
         }
-      } catch (e) {
+      } catch (_e) {
         console.warn('OffscreenCanvas not available, using fallback');
       }
     }
@@ -184,7 +184,7 @@ class PygameSound {
 // Clock class for frame timing
 class PygameClock {
   private lastTick: number = 0;
-  private targetFPS: number = 60;
+  public targetFPS: number = 60;
 
   tick(fps: number = 60): number {
     this.targetFPS = fps;
@@ -220,7 +220,7 @@ class PygameFont {
 
   render(
     text: string,
-    antialias: boolean = true,
+    _antialias: boolean = true,
     color: [number, number, number] = [255, 255, 255]
   ): RenderingSurface {
     // Calculate approximate text dimensions
@@ -266,7 +266,7 @@ export function resetPygameState() {
   frameBuffer = [];
   isRenderingActive = false;
   currentFPS = 60;
-  lastFrameTime = 0;
+  _lastFrameTime = 0;
 }
 
 // Create complete pygame environment for Pyodide
@@ -382,7 +382,7 @@ export function createPygameEnvironment() {
       Sound: PygameSound,
       music: {
         load: (file: string) => console.log(`🎵 Loading music: ${file}`),
-        play: (loops: number = -1) => console.log('🎵 Playing music'),
+        play: (_loops: number = -1) => console.log('🎵 Playing music'),
         stop: () => console.log('🎵 Music stopped'),
         set_volume: (vol: number) => console.log(`🎵 Music volume: ${vol}`),
       },
@@ -400,10 +400,10 @@ export function createPygameEnvironment() {
       get_pos: () => [0, 0],
       get_pressed: () => [false, false, false],
       set_cursor: (
-        size: [number, number],
-        hotspot: [number, number],
-        xormasks: any,
-        andmasks: any
+        _size: [number, number],
+        _hotspot: [number, number],
+        _xormasks: any,
+        _andmasks: any
       ) => null,
     },
     Surface: RenderingSurface,
@@ -414,16 +414,16 @@ export function createPygameEnvironment() {
         console.log(`📷 Loading image: ${filename}`);
         return new RenderingSurface(100, 100);
       },
-      save: (surface: RenderingSurface, filename: string) => {
+      save: (_surface: RenderingSurface, filename: string) => {
         console.log(`💾 Saving image: ${filename}`);
       },
     },
     transform: {
-      scale: (surface: RenderingSurface, size: [number, number]) => {
+      scale: (_surface: RenderingSurface, size: [number, number]) => {
         return new RenderingSurface(size[0], size[1]);
       },
-      rotate: (surface: RenderingSurface, angle: number) => surface,
-      flip: (surface: RenderingSurface, xbool: boolean, ybool: boolean) => surface,
+      rotate: (surface: RenderingSurface, _angle: number) => surface,
+      flip: (surface: RenderingSurface, _xbool: boolean, _ybool: boolean) => surface,
     },
     sprite: {
       Sprite: class {
@@ -445,7 +445,9 @@ export function createPygameEnvironment() {
           this.sprites = [];
         }
         update() {
-          this.sprites.forEach((s) => s.update());
+          this.sprites.forEach((s) => {
+            s.update();
+          });
         }
         draw(surface: RenderingSurface) {
           this.sprites.forEach((s) => {
@@ -732,7 +734,10 @@ export const pygameShim = {
     rect(surface: RenderingSurface, color: any, rect: any) {
       if (surface.isMainSurface && isRenderingActive) {
         const cssColor = parseColor(color);
-        let x, y, width, height;
+        let x: number;
+        let y: number;
+        let width: number;
+        let height: number;
 
         if (Array.isArray(rect) && rect.length >= 4) {
           [x, y, width, height] = rect;
@@ -811,7 +816,7 @@ export const pygameShim = {
 
   // Transform module
   transform: {
-    scale(surface: RenderingSurface, size: [number, number]) {
+    scale(_surface: RenderingSurface, size: [number, number]) {
       return new RenderingSurface(size[0], size[1]);
     },
     rotate(surface: RenderingSurface, angle: number) {

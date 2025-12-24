@@ -4,7 +4,6 @@ import {
   Circle,
   Code,
   Gamepad2,
-  Music,
   Palette,
   Settings,
   Sparkles,
@@ -53,7 +52,7 @@ export default function GameProgressSidebar({
   // Calculate progress based on completed stages
   useEffect(() => {
     let progress = 0;
-    const stages = 4; // Title, Gameplay, Ending, Final Assembly
+    const _stages = 4; // Title, Gameplay, Ending, Final Assembly
 
     if (sessionActions.titlePresetApplied) progress += 25;
     if (sessionActions.gameplayConfigured) progress += 25;
@@ -74,7 +73,7 @@ export default function GameProgressSidebar({
   // Track component additions and show animations
   useEffect(() => {
     const currentComponents = sessionActions.selectedComponents || {};
-    const newComponents: ComponentSelection[] = [];
+    const _newComponents: ComponentSelection[] = [];
 
     // Check for new components
     Object.entries(currentComponents).forEach(([componentId, variant]) => {

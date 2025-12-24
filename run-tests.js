@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Test runner script for TypeScript-Python pygame builder
-const { spawn } = require('child_process');
+const { spawn } = require('node:child_process');
 
 const args = process.argv.slice(2);
 const command = args[0] || 'help';

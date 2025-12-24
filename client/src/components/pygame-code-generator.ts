@@ -68,7 +68,7 @@ export function generatePygameCode(choices: GameChoice[], params: GameParams = {
   return buildCompleteCode(template);
 }
 
-function addCharacterCode(template: CodeTemplate, choice: GameChoice, params: GameParams) {
+function addCharacterCode(template: CodeTemplate, choice: GameChoice, _params: GameParams) {
   const characterType = choice.id;
 
   // Add character class
@@ -163,7 +163,7 @@ class Player:
 `);
 }
 
-function addEnemyCode(template: CodeTemplate, choice: GameChoice, params: GameParams) {
+function addEnemyCode(template: CodeTemplate, choice: GameChoice, _params: GameParams) {
   const enemyBehavior = choice.behavior || 'patrol';
 
   template.classes.push(`
@@ -231,7 +231,7 @@ class Enemy:
 `);
 }
 
-function addCollectibleCode(template: CodeTemplate, choice: GameChoice, params: GameParams) {
+function addCollectibleCode(template: CodeTemplate, choice: GameChoice, _params: GameParams) {
   const collectibleType = choice.id;
 
   template.classes.push(`
@@ -377,7 +377,7 @@ function addGameRuleCode(template: CodeTemplate, choice: GameChoice) {
   }
 }
 
-function addMechanicCode(template: CodeTemplate, choice: GameChoice, params: GameParams) {
+function addMechanicCode(template: CodeTemplate, choice: GameChoice, _params: GameParams) {
   const mechanic = choice.id;
 
   switch (mechanic) {

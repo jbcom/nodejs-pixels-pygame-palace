@@ -37,66 +37,12 @@ export default function PygameRunner({
   const [error, setError] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Initialize Pyodide
-  const initPyodide = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // Load Pyodide if not already loaded
-      if (!window.pyodide) {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
-        script.async = true;
-
-        await new Promise((resolve, reject) => {
-          script.onload = resolve;
-          script.onerror = reject;
-          document.body.appendChild(script);
-        });
-
-        // Wait for Pyodide to be available
-        await new Promise((resolve) => {
-          const checkInterval = setInterval(() => {
-            if (window.loadPyodide) {
-              clearInterval(checkInterval);
-              resolve(true);
-            }
-          }, 100);
-        });
-
-        // Initialize Pyodide
-        if (!window.loadPyodide) {
-          throw new Error('Pyodide failed to load');
-        }
-        window.pyodide = await window.loadPyodide({
-          indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
-        });
-
-        // Skip pygame installation - we'll use our mock implementation
-        // pygame-ce cannot be installed in browser due to binary dependencies
-      }
-
-      pyodideRef.current = window.pyodide;
-
-      // Setup canvas bridge for pygame
-      await setupCanvasBridge();
-
-      setIsLoading(false);
-    } catch (err) {
-      const errorMsg = `Failed to initialize Pyodide: ${err}`;
-      setError(errorMsg);
-      setIsLoading(false);
-      if (onError) onError(errorMsg);
-    }
-  }, [onError]);
-
   // Setup bridge between Pyodide and canvas
   const setupCanvasBridge = async () => {
     if (!pyodideRef.current || !canvasRef.current) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const _ctx = canvas.getContext('2d');
 
     // Inject canvas functions into Python environment
     pyodideRef.current.runPython(`
@@ -325,6 +271,60 @@ MockPygame.key.get_pressed = lambda: global_key_state
     `);
   };
 
+  // Initialize Pyodide
+  const initPyodide = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Load Pyodide if not already loaded
+      if (!window.pyodide) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+        script.async = true;
+
+        await new Promise((resolve, reject) => {
+          script.onload = resolve;
+          script.onerror = reject;
+          document.body.appendChild(script);
+        });
+
+        // Wait for Pyodide to be available
+        await new Promise((resolve) => {
+          const checkInterval = setInterval(() => {
+            if (window.loadPyodide) {
+              clearInterval(checkInterval);
+              resolve(true);
+            }
+          }, 100);
+        });
+
+        // Initialize Pyodide
+        if (!window.loadPyodide) {
+          throw new Error('Pyodide failed to load');
+        }
+        window.pyodide = await window.loadPyodide({
+          indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
+        });
+
+        // Skip pygame installation - we'll use our mock implementation
+        // pygame-ce cannot be installed in browser due to binary dependencies
+      }
+
+      pyodideRef.current = window.pyodide;
+
+      // Setup canvas bridge for pygame
+      await setupCanvasBridge();
+
+      setIsLoading(false);
+    } catch (err) {
+      const errorMsg = `Failed to initialize Pyodide: ${err}`;
+      setError(errorMsg);
+      setIsLoading(false);
+      if (onError) onError(errorMsg);
+    }
+  }, [onError, setupCanvasBridge]);
+
   // Run the compiled game
   const runGame = useCallback(async () => {
     if (!pyodideRef.current) {
@@ -423,7 +423,7 @@ if 'global_key_state' in globals():
     return () => {
       stopGame();
     };
-  }, []);
+  }, [initPyodide, stopGame]);
 
   return (
     <Card className={`${className} ${isFullscreen ? 'fixed inset-0 z-50' : 'relative'}`}>

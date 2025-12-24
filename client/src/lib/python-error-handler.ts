@@ -209,7 +209,7 @@ function parseTraceback(traceback: string, context?: ErrorContext): PythonError 
       if (fileMatch && !fileName) {
         // Take the first match we find going backwards (deepest frame)
         fileName = fileMatch[1];
-        lineNumber = parseInt(fileMatch[2]);
+        lineNumber = parseInt(fileMatch[2], 10);
         break;
       }
     }
@@ -241,11 +241,7 @@ function parseTraceback(traceback: string, context?: ErrorContext): PythonError 
         console.log(`Using direct file content for ${fileName} from files map`);
       }
       // Priority 2: For concatenated multi-file context (legacy support)
-      else if (
-        context?.code &&
-        context.code.includes('# === File:') &&
-        fileName !== '<user_code>'
-      ) {
+      else if (context?.code?.includes('# === File:') && fileName !== '<user_code>') {
         const fileMatch = context.code.match(
           new RegExp(
             `# === File: ${fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} ===\\s*\\n([\\s\\S]*?)(?=\\n# === File:|$)`
@@ -670,14 +666,10 @@ except Exception as e:
         const errorInfo = pyodideInstance.runPython('get_enhanced_error_info()').toJs();
 
         // Check if we have any error information
-        if (
-          (errorInfo.traceback && errorInfo.traceback.trim()) ||
-          (stderr && stderr.trim()) ||
-          executionError
-        ) {
+        if (errorInfo.traceback?.trim() || stderr?.trim() || executionError) {
           let pythonError: PythonError;
 
-          if (errorInfo.traceback && errorInfo.traceback.trim()) {
+          if (errorInfo.traceback?.trim()) {
             // Use enhanced error capture info (most reliable)
             pythonError = parseTraceback(errorInfo.traceback, context) || {
               type: errorInfo.type || 'UnknownError',
@@ -685,7 +677,7 @@ except Exception as e:
               traceback: errorInfo.traceback,
               educational: context?.isEducational !== false,
             };
-          } else if (stderr && stderr.trim()) {
+          } else if (stderr?.trim()) {
             // Fallback to stderr parsing
             pythonError = parseTraceback(stderr, context) || {
               type: 'RuntimeError',
@@ -734,7 +726,7 @@ except Exception as e:
 
         const pythonError: PythonError = {
           type: 'CriticalError',
-          message: 'Error in enhanced error handling: ' + errorMessage,
+          message: `Error in enhanced error handling: ${errorMessage}`,
           traceback: errorMessage,
           educational: context?.isEducational !== false,
         };
@@ -754,7 +746,7 @@ except Exception as e:
 /**
  * Legacy function for backward compatibility - will be deprecated
  */
-export function createEnhancedErrorCaptureWithPyodide(pyodide: any, context?: ErrorContext) {
+export function createEnhancedErrorCaptureWithPyodide(pyodide: any, _context?: ErrorContext) {
   return {
     /**
      * Set up enhanced error capture in Pyodide environment
@@ -886,14 +878,10 @@ except Exception as e:
         const errorInfo = pyodide.runPython('get_enhanced_error_info()').toJs();
 
         // Check if we have any error information
-        if (
-          (errorInfo.traceback && errorInfo.traceback.trim()) ||
-          (stderr && stderr.trim()) ||
-          executionError
-        ) {
+        if (errorInfo.traceback?.trim() || stderr?.trim() || executionError) {
           let pythonError: PythonError;
 
-          if (errorInfo.traceback && errorInfo.traceback.trim()) {
+          if (errorInfo.traceback?.trim()) {
             // Use enhanced error capture info (most reliable)
             pythonError = parseTraceback(errorInfo.traceback, context) || {
               type: errorInfo.type || 'UnknownError',
@@ -901,7 +889,7 @@ except Exception as e:
               traceback: errorInfo.traceback,
               educational: context?.isEducational !== false,
             };
-          } else if (stderr && stderr.trim()) {
+          } else if (stderr?.trim()) {
             // Fallback to stderr parsing
             pythonError = parseTraceback(stderr, context) || {
               type: 'RuntimeError',
@@ -950,7 +938,7 @@ except Exception as e:
 
         const pythonError: PythonError = {
           type: 'CriticalError',
-          message: 'Error in enhanced error handling: ' + errorMessage,
+          message: `Error in enhanced error handling: ${errorMessage}`,
           traceback: errorMessage,
           educational: context?.isEducational !== false,
         };

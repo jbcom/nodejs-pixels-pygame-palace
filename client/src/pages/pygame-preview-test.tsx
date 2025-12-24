@@ -57,56 +57,6 @@ export default function PygamePreviewTest() {
     },
   ];
 
-  // Load Pyodide
-  useEffect(() => {
-    loadPyodide();
-  }, []);
-
-  const loadPyodide = async () => {
-    if (pyodide) return;
-
-    setPyodideLoading(true);
-    setPyodideError(null);
-
-    try {
-      // Add Pyodide script if not already loaded
-      if (!document.getElementById('pyodide-script')) {
-        const script = document.createElement('script');
-        script.id = 'pyodide-script';
-        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
-        script.async = true;
-        document.head.appendChild(script);
-
-        await new Promise((resolve, reject) => {
-          script.onload = resolve;
-          script.onerror = reject;
-        });
-      }
-
-      // Load Pyodide
-      if (window.loadPyodide) {
-        console.log('Loading Pyodide...');
-        const pyodideInstance = await window.loadPyodide({
-          indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
-        });
-
-        // Setup pygame environment
-        await setupPygameEnvironment(pyodideInstance);
-
-        setPyodide(pyodideInstance);
-        console.log('Pyodide loaded successfully!');
-      } else {
-        throw new Error('Pyodide loader not available');
-      }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load Pyodide';
-      setPyodideError(errorMessage);
-      console.error('Pyodide loading error:', error);
-    } finally {
-      setPyodideLoading(false);
-    }
-  };
-
   const setupPygameEnvironment = async (pyodideInstance: any) => {
     try {
       // Import pygame module from our simulation
@@ -204,6 +154,56 @@ print("Pygame environment setup complete")
       throw error;
     }
   };
+
+  const loadPyodide = async () => {
+    if (pyodide) return;
+
+    setPyodideLoading(true);
+    setPyodideError(null);
+
+    try {
+      // Add Pyodide script if not already loaded
+      if (!document.getElementById('pyodide-script')) {
+        const script = document.createElement('script');
+        script.id = 'pyodide-script';
+        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+        script.async = true;
+        document.head.appendChild(script);
+
+        await new Promise((resolve, reject) => {
+          script.onload = resolve;
+          script.onerror = reject;
+        });
+      }
+
+      // Load Pyodide
+      if (window.loadPyodide) {
+        console.log('Loading Pyodide...');
+        const pyodideInstance = await window.loadPyodide({
+          indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
+        });
+
+        // Setup pygame environment
+        await setupPygameEnvironment(pyodideInstance);
+
+        setPyodide(pyodideInstance);
+        console.log('Pyodide loaded successfully!');
+      } else {
+        throw new Error('Pyodide loader not available');
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load Pyodide';
+      setPyodideError(errorMessage);
+      console.error('Pyodide loading error:', error);
+    } finally {
+      setPyodideLoading(false);
+    }
+  };
+
+  // Load Pyodide
+  useEffect(() => {
+    loadPyodide();
+  }, [loadPyodide]);
 
   const generateSampleCode = () => {
     return generateTestCode();

@@ -4,7 +4,10 @@
  */
 
 export class Vector2 {
-  constructor(public x: number = 0, public y: number = 0) {}
+  constructor(
+    public x: number = 0,
+    public y: number = 0
+  ) {}
 
   add(v: Vector2): Vector2 {
     this.x += v.x;
@@ -122,11 +125,11 @@ export class Game {
     return this.keysDown.has(key);
   }
 
-  addSprite(sprite: Sprite): void {
+  addSprite(_sprite: Sprite): void {
     console.log('Sprite added to game');
   }
 
-  removeSprite(sprite: Sprite): void {
+  removeSprite(_sprite: Sprite): void {
     console.log('Sprite removed from game');
   }
 
@@ -159,14 +162,14 @@ export class Health {
 // Audio
 export class Sound {
   constructor(public path: string) {}
-  play(config?: { volume: number }): void {
+  play(_config?: { volume: number }): void {
     console.log(`Playing sound: ${this.path}`);
   }
 }
 
 export class Music {
   constructor(public path: string) {}
-  play(config?: { loop: boolean; volume: number }): void {
+  play(_config?: { loop: boolean; volume: number }): void {
     console.log(`Playing music: ${this.path}`);
   }
   pause(): void {}
@@ -178,7 +181,7 @@ export class Music {
 export class Scene {
   public manager!: SceneManager;
   onEnter(): void {}
-  onUpdate(dt: number): void {}
+  onUpdate(_dt: number): void {}
   onExit(): void {}
 }
 

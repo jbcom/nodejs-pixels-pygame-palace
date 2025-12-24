@@ -12,7 +12,7 @@ const QUICK_TEST_RESOLUTIONS = [
 async function runQuickTests() {
   console.log('⚡ Running Quick Selenium Tests (Subset)');
   console.log('Testing 5 key resolutions for rapid feedback');
-  console.log('=' + '='.repeat(50));
+  console.log(`=${'='.repeat(50)}`);
 
   const runner = new ResolutionTestRunner();
   const results: any[] = [];

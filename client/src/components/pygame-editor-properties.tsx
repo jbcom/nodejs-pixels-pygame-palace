@@ -1,5 +1,4 @@
-import { Code, Move, Palette, Settings } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Move, Palette, Settings } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -31,7 +30,7 @@ export default function PygameEditorProperties({
   const componentDef = getComponentById(component.componentId);
   if (!componentDef) return null;
 
-  const renderPropertyControl = (prop: any) => {
+  const _renderPropertyControl = (prop: any) => {
     const value = component.properties[prop.name] ?? prop.default;
 
     switch (prop.type) {

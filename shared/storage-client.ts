@@ -1,13 +1,4 @@
-import type {
-  InsertLesson,
-  InsertProject,
-  InsertUser,
-  InsertUserProgress,
-  Lesson,
-  Project,
-  User,
-  UserProgress,
-} from '@shared/schema';
+import type { InsertProject, Lesson, Project, User, UserProgress } from '@shared/schema';
 
 // Client-side storage adapter for GitHub Pages compatibility
 // Uses static JSON files for lessons and LocalStorage for user data
@@ -94,7 +85,7 @@ export class ClientStorage {
         const lessons = await response.json();
         return lessons;
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn('Failed to load lessons from static file, using fallback');
     }
 

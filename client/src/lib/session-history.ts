@@ -166,7 +166,9 @@ class SessionHistory {
   // Notify all listeners
   private notifyListeners(): void {
     const state = this.getState();
-    this.listeners.forEach((listener) => listener(state));
+    this.listeners.forEach((listener) => {
+      listener(state);
+    });
   }
 
   // Save to localStorage

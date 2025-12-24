@@ -1,6 +1,5 @@
 // PyGame Space Shooter Template
 
-import { drawStar } from './pygame-component-types';
 import type { GameTemplate } from './pygame-template-types';
 
 export const shooterTemplate: GameTemplate = {

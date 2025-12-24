@@ -1,4 +1,4 @@
-import { Move, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { Button } from '@/components/ui/button';
@@ -94,7 +94,7 @@ export default function PygameEditorCanvas({
       // Draw placed components
       components.forEach((comp) => {
         const componentDef = getComponentById(comp.componentId);
-        if (componentDef && componentDef.preview) {
+        if (componentDef?.preview) {
           ctx.save();
           ctx.translate(comp.x, comp.y);
 

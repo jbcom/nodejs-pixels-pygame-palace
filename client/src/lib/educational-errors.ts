@@ -172,7 +172,7 @@ player_x = move_player()  # Call the function to get the value`,
     this.patterns.push({
       pattern: /pygame\.error.*?display mode not set/,
       category: 'pygame',
-      createEducationalError: (match, originalError) => ({
+      createEducationalError: (_match, originalError) => ({
         originalError,
         friendlyMessage: 'You need to create a game window before drawing to the screen.',
         explanation:
@@ -280,7 +280,7 @@ pygame.draw.rect(screen, (0, 0, 255), (50, 50, 100, 100))`,
     this.patterns.push({
       pattern: /NetworkError|Failed to fetch|ERR_NETWORK/,
       category: 'network',
-      createEducationalError: (match, originalError) => ({
+      createEducationalError: (_match, originalError) => ({
         originalError,
         friendlyMessage: "There's a problem connecting to the internet or the server.",
         explanation:
@@ -304,7 +304,7 @@ pygame.draw.rect(screen, (0, 0, 255), (50, 50, 100, 100))`,
     this.patterns.push({
       pattern: /TimeoutError|Request timeout/,
       category: 'network',
-      createEducationalError: (match, originalError) => ({
+      createEducationalError: (_match, originalError) => ({
         originalError,
         friendlyMessage: 'The operation took too long and timed out.',
         explanation:
@@ -354,7 +354,7 @@ pygame.draw.rect(screen, (0, 0, 255), (50, 50, 100, 100))`,
     this.patterns.push({
       pattern: /ChunkLoadError|Loading chunk \d+ failed/,
       category: 'system',
-      createEducationalError: (match, originalError) => ({
+      createEducationalError: (_match, originalError) => ({
         originalError,
         friendlyMessage:
           'There was a problem loading part of the website. Try refreshing the page.',

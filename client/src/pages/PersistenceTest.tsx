@@ -34,7 +34,7 @@ export default function PersistenceTest() {
 
   useEffect(() => {
     refreshStates();
-  }, []);
+  }, [refreshStates]);
 
   const testSaveWizardState = () => {
     saveWizardState({

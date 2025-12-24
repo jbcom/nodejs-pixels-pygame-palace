@@ -1,5 +1,5 @@
-import react from '@vitejs/plugin-react';
 import path from 'node:path';
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -9,7 +9,13 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname, 'client', 'src'),
       '@shared': path.resolve(import.meta.dirname, 'shared'),
       '@assets': path.resolve(import.meta.dirname, 'assets'),
-      '@strata/engine': path.resolve(import.meta.dirname, 'client', 'src', 'lib', 'strata-engine.ts'),
+      '@strata/engine': path.resolve(
+        import.meta.dirname,
+        'client',
+        'src',
+        'lib',
+        'strata-engine.ts'
+      ),
     },
   },
   root: path.resolve(import.meta.dirname, 'client'),

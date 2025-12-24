@@ -4,8 +4,8 @@ async function globalSetup(config: FullConfig) {
   console.log('🚀 Starting global test setup...');
 
   // Create output directories
-  const fs = await import('fs');
-  const path = await import('path');
+  const fs = await import('node:fs');
+  const path = await import('node:path');
 
   const outputDir = path.join(process.cwd(), 'test-results');
   const screenshotsDir = path.join(outputDir, 'screenshots');

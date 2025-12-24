@@ -1,8 +1,8 @@
-const { Builder, By, until, Capabilities } = require('selenium-webdriver');
+const { Builder, By, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
+const assert = require('node:assert');
+const fs = require('node:fs');
+const path = require('node:path');
 
 // Test configuration
 const BASE_URL = process.env.TEST_URL || 'http://localhost:5000';
@@ -153,7 +153,7 @@ describe('Multi-Resolution Wizard Tests', function () {
           assert(verticalContainer.length > 0, 'Mobile should have vertical layout');
 
           // Check hamburger menu visibility
-          const hamburgerMenu = await driver.findElements(
+          const _hamburgerMenu = await driver.findElements(
             By.css('[data-testid="open-pixel-menu-button"]')
           );
 
@@ -473,8 +473,8 @@ if (require.main === module) {
   console.log(`Testing against: ${BASE_URL}`);
 
   // Check if server is running
-  const http = require('http');
-  const url = new URL(BASE_URL);
+  const http = require('node:http');
+  const _url = new URL(BASE_URL);
 
   const checkServer = () => {
     return new Promise((resolve) => {

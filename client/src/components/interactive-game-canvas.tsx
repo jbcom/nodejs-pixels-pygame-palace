@@ -1,21 +1,9 @@
 import type { Entity, GameConfig, Scene } from '@shared/schema';
-import {
-  Copy,
-  Grid3x3,
-  Maximize2,
-  MousePointer,
-  Move,
-  Pause,
-  Play,
-  RotateCw,
-  Settings,
-  Trash2,
-} from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Grid3x3, Pause, Play, Trash2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -26,13 +14,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 // Pyodide removed - new pygame component system coming
 import { useToast } from '@/hooks/use-toast';
@@ -54,15 +35,15 @@ export default function InteractiveGameCanvas({
 }: InteractiveGameCanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null);
   // Pyodide temporarily disabled
-  const pyodide = null;
-  const pyodideLoading = false;
+  const _pyodide = null;
+  const _pyodideLoading = false;
   const { toast } = useToast();
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [showGrid, setShowGrid] = useState(true);
   const [gridSnap, setGridSnap] = useState(true);
   const [selectedEntity, setSelectedEntity] = useState<string | null>(null);
-  const [draggedPosition, setDraggedPosition] = useState<{ x: number; y: number } | null>(null);
+  const [_draggedPosition, _setDraggedPosition] = useState<{ x: number; y: number } | null>(null);
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [pendingAsset, setPendingAsset] = useState<DraggableAsset | null>(null);
   const [entityConfig, setEntityConfig] = useState<Partial<Entity>>({});
@@ -212,7 +193,7 @@ export default function InteractiveGameCanvas({
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [selectedEntity]);
+  }, [selectedEntity, handleDeleteEntity]);
 
   return (
     <div className={cn('flex flex-col h-full', className)}>
@@ -305,8 +286,14 @@ export default function InteractiveGameCanvas({
         >
           {/* Render entities */}
           {scene?.entities.map((entity) => (
-            <div
+            <button
               key={entity.id}
+              type="button"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  if (!isPlaying) setSelectedEntity(entity.id);
+                }
+              }}
               className={cn(
                 'absolute border rounded transition-all',
                 selectedEntity === entity.id
@@ -354,7 +341,7 @@ export default function InteractiveGameCanvas({
               <div className="flex items-center justify-center h-full bg-primary/10">
                 <span className="text-xs font-medium text-center px-1">{entity.name}</span>
               </div>
-            </div>
+            </button>
           ))}
 
           {/* Drop indicator */}
@@ -414,7 +401,7 @@ export default function InteractiveGameCanvas({
                       ...entityConfig,
                       position: {
                         ...entityConfig.position!,
-                        x: parseInt(e.target.value) || 0,
+                        x: parseInt(e.target.value, 10) || 0,
                       },
                     })
                   }
@@ -432,7 +419,7 @@ export default function InteractiveGameCanvas({
                       ...entityConfig,
                       position: {
                         ...entityConfig.position!,
-                        y: parseInt(e.target.value) || 0,
+                        y: parseInt(e.target.value, 10) || 0,
                       },
                     })
                   }
@@ -453,7 +440,7 @@ export default function InteractiveGameCanvas({
                       ...entityConfig,
                       size: {
                         ...entityConfig.size!,
-                        width: parseInt(e.target.value) || 40,
+                        width: parseInt(e.target.value, 10) || 40,
                       },
                     })
                   }
@@ -471,7 +458,7 @@ export default function InteractiveGameCanvas({
                       ...entityConfig,
                       size: {
                         ...entityConfig.size!,
-                        height: parseInt(e.target.value) || 40,
+                        height: parseInt(e.target.value, 10) || 40,
                       },
                     })
                   }
@@ -489,7 +476,7 @@ export default function InteractiveGameCanvas({
                 onChange={(e) =>
                   setEntityConfig({
                     ...entityConfig,
-                    layer: parseInt(e.target.value) || 0,
+                    layer: parseInt(e.target.value, 10) || 0,
                   })
                 }
                 data-testid="input-entity-layer"

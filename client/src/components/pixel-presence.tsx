@@ -1,6 +1,4 @@
-import pixelCelebrating from '@assets/pixel/Pixel_celebrating_victory_expression_24b7a377.png';
 import pixelCoding from '@assets/pixel/Pixel_coding_programming_expression_56de8ca0.png';
-import pixelEncouraging from '@assets/pixel/Pixel_encouraging_supportive_expression_cf958090.png';
 import pixelGaming from '@assets/pixel/Pixel_gaming_focused_expression_6f3fdfab.png';
 // Import Pixel images
 import pixelHappy from '@assets/pixel/Pixel_happy_excited_expression_22a41625.png';
@@ -8,16 +6,7 @@ import pixelTeaching from '@assets/pixel/Pixel_teaching_explaining_expression_27
 import pixelThinking from '@assets/pixel/Pixel_thinking_pondering_expression_0ffffedb.png';
 import pixelWelcoming from '@assets/pixel/Pixel_welcoming_waving_expression_279ffdd2.png';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  BookOpen,
-  ChevronRight,
-  Code2,
-  Gamepad2,
-  History,
-  Rocket,
-  Sparkles,
-  X,
-} from 'lucide-react';
+import { BookOpen, ChevronRight, Gamepad2, History, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -43,12 +32,12 @@ export default function PixelPresence({ onNavigate, currentPath = '/' }: PixelPr
   const [currentChoices, setCurrentChoices] = useState<Choice[]>([]);
   const [pixelImage, setPixelImage] = useState(pixelWelcoming);
   const [dialogue, setDialogue] = useState('Need help?');
-  const [showContent, setShowContent] = useState(false);
+  const [_showContent, setShowContent] = useState(false);
   const [mobileDialogueOpen, setMobileDialogueOpen] = useState(false);
   const isMobile = useIsMobile();
 
   // Initial choices for center stage
-  const initialChoices: Choice[] = [
+  const _initialChoices: Choice[] = [
     {
       id: 'make-game',
       label: 'Make a game!',
@@ -307,6 +296,7 @@ export default function PixelPresence({ onNavigate, currentPath = '/' }: PixelPr
                     <p className="text-sm font-semibold">{dialogue}</p>
                   </div>
                   <button
+                    type="button"
                     onClick={collapsePixel}
                     className="text-muted-foreground hover:text-foreground"
                     data-testid="collapse-pixel"
@@ -351,6 +341,7 @@ export default function PixelPresence({ onNavigate, currentPath = '/' }: PixelPr
           <Card className="relative w-full p-6 bg-white/98 dark:bg-gray-900/98 backdrop-blur-xl shadow-2xl border-2 border-purple-500/20 rounded-t-2xl">
             {/* Close button for mobile modal */}
             <button
+              type="button"
               onClick={() => setMobileDialogueOpen(false)}
               className="absolute top-4 right-4 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               data-testid="mobile-dialogue-close"

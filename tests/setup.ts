@@ -17,9 +17,10 @@ afterEach(() => {
   sessionStorage.clear();
   // Clear all cookies
   document.cookie.split(';').forEach((c) => {
+    // biome-ignore lint/suspicious/noDocumentCookie: Necessary for clearing cookies in test setup
     document.cookie = c
       .replace(/^ +/, '')
-      .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+      .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
   });
 });
 

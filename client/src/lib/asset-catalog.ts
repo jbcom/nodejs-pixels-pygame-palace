@@ -1,8 +1,6 @@
 // Comprehensive Asset Catalog System
 // Manages 2000+ assets across 2D sprites, 3D models, UI elements, and audio files
 
-import { GameAsset } from './asset-library';
-
 export interface AssetMetadata {
   id: string;
   name: string;
@@ -44,7 +42,6 @@ export class AssetCatalog {
   private preloadedAssets: Map<string, any> = new Map();
   private assetsByType: Map<string, Set<string>> = new Map();
   private assetsByCategory: Map<string, Set<string>> = new Map();
-  private loadingQueue: string[] = [];
   private memoryUsage: number = 0;
   private maxMemoryUsage: number = 500 * 1024 * 1024; // 500MB default
   private hotSwapEnabled: boolean = true;
@@ -338,7 +335,7 @@ export class AssetCatalog {
       this.assetCache.delete(assetId);
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       // Rollback on failure
       asset.path = oldPath;
       return false;
@@ -403,7 +400,7 @@ export class AssetCatalog {
 
   unloadAsset(assetId: string): void {
     const asset = this.assets.get(assetId);
-    if (asset && asset.preloaded) {
+    if (asset?.preloaded) {
       this.preloadedAssets.delete(assetId);
       this.assetCache.delete(assetId);
       this.memoryUsage -= asset.memoryUsage || 0;
@@ -471,8 +468,12 @@ export class AssetCatalog {
   clearCatalog(): void {
     this.assets.clear();
     this.preloadedAssets.clear();
-    this.assetsByType.forEach((set) => set.clear());
-    this.assetsByCategory.forEach((set) => set.clear());
+    this.assetsByType.forEach((set) => {
+      set.clear();
+    });
+    this.assetsByCategory.forEach((set) => {
+      set.clear();
+    });
     this.assetCache.clear();
     this.memoryUsage = 0;
   }

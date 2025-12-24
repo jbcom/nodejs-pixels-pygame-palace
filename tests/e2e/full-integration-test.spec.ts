@@ -1,6 +1,6 @@
 import { expect, type Page, test } from '@playwright/test';
-import { ErrorDetector, withErrorDetection } from './utils/error-detection';
-import { WizardNavigator, withWizardNavigation } from './utils/wizard-actions';
+import { withErrorDetection } from './utils/error-detection';
+import { withWizardNavigation } from './utils/wizard-actions';
 
 test.describe('Full Integration Test - Wizard to Game', () => {
   let page: Page;
@@ -408,7 +408,7 @@ test.describe('Full Integration Test - Wizard to Game', () => {
           await page.reload({ waitUntil: 'networkidle' });
           await navigator.waitForWizardLoad();
 
-          const finalState = await navigator.getWizardState();
+          const _finalState = await navigator.getWizardState();
           console.log(`Tested ${checkpoints.length} checkpoints with persistence`);
 
           // Take screenshot of final state

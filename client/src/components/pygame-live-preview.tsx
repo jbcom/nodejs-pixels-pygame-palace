@@ -1,15 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  FlaskConical,
-  Gamepad2,
-  Pause,
-  Play,
-  RotateCcw,
-  Sparkles,
-  Split,
-  Volume2,
-  Zap,
-} from 'lucide-react';
+import { FlaskConical, Gamepad2, Pause, Play, RotateCcw, Sparkles, Split, Zap } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -104,6 +94,33 @@ export default function PygameLivePreview({
     }
   }, [pyodide]);
 
+  // Stop render loop
+  const stopRenderLoop = useCallback(() => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+  }, []);
+
+  // Render loop for canvas animation
+  const startRenderLoop = useCallback(
+    (_canvas: HTMLCanvasElement) => {
+      const render = () => {
+        // Flush pygame frame buffer to canvas
+        flushFrameBuffer();
+
+        // Continue animation if playing
+        if (state.isPlaying) {
+          animationFrameRef.current = requestAnimationFrame(render);
+        }
+      };
+
+      // Start the loop
+      animationFrameRef.current = requestAnimationFrame(render);
+    },
+    [state.isPlaying]
+  );
+
   // Generate and execute Python code when choices change
   const executePygameCode = useCallback(
     async (targetCanvas: HTMLCanvasElement, choicesToUse: GameChoice[]) => {
@@ -154,35 +171,8 @@ export default function PygameLivePreview({
         });
       }
     },
-    [pyodide, gameParams, toast]
+    [pyodide, gameParams, toast, startRenderLoop]
   );
-
-  // Render loop for canvas animation
-  const startRenderLoop = useCallback(
-    (canvas: HTMLCanvasElement) => {
-      const render = () => {
-        // Flush pygame frame buffer to canvas
-        flushFrameBuffer();
-
-        // Continue animation if playing
-        if (state.isPlaying) {
-          animationFrameRef.current = requestAnimationFrame(render);
-        }
-      };
-
-      // Start the loop
-      animationFrameRef.current = requestAnimationFrame(render);
-    },
-    [state.isPlaying]
-  );
-
-  // Stop render loop
-  const stopRenderLoop = useCallback(() => {
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
-  }, []);
 
   // Handle play/pause
   const togglePlayPause = useCallback(() => {
@@ -257,7 +247,7 @@ export default function PygameLivePreview({
     if (choices.length > 0 && canvasRef.current && pyodide) {
       executePygameCode(canvasRef.current, choices);
     }
-  }, [choices, pyodide]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [choices, pyodide, executePygameCode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Cleanup on unmount
   useEffect(() => {
@@ -266,7 +256,7 @@ export default function PygameLivePreview({
       setCanvasContext(null);
       resetPygameState();
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [stopRenderLoop]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={cn('space-y-4', className)}>
@@ -399,7 +389,7 @@ export default function PygameLivePreview({
           <div className="space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-medium">Speed</label>
+                <span className="text-xs font-medium">Speed</span>
                 <Slider
                   value={[gameParams.speed]}
                   onValueChange={([value]) => setGameParams((prev) => ({ ...prev, speed: value }))}
@@ -412,7 +402,7 @@ export default function PygameLivePreview({
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium">Jump Height</label>
+                <span className="text-xs font-medium">Jump Height</span>
                 <Slider
                   value={[gameParams.jumpHeight]}
                   onValueChange={([value]) =>
@@ -427,7 +417,7 @@ export default function PygameLivePreview({
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium">Enemy Speed</label>
+                <span className="text-xs font-medium">Enemy Speed</span>
                 <Slider
                   value={[gameParams.enemySpeed]}
                   onValueChange={([value]) =>

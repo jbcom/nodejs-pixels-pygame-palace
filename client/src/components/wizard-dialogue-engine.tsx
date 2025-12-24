@@ -43,7 +43,7 @@ export function useWizardDialogue({
       activeFlowPath: persistedState?.activeFlowPath,
     });
 
-    if (persistedState && persistedState.currentNodeId) {
+    if (persistedState?.currentNodeId) {
       persistedStateRef.current = persistedState;
       return {
         currentNodeId: persistedState.currentNodeId,
@@ -64,7 +64,7 @@ export function useWizardDialogue({
 
   const getInitialSessionActions = (): SessionActions => {
     const persistedState = persistedStateRef.current || loadWizardState();
-    if (persistedState && persistedState.sessionActions) {
+    if (persistedState?.sessionActions) {
       return persistedState.sessionActions;
     }
     return {
@@ -147,11 +147,7 @@ export function useWizardDialogue({
       // Even if flow is loaded, check if we need to restore persisted state
       // This handles scenarios where state needs to be synchronized
       const persistedState = loadWizardState();
-      if (
-        persistedState &&
-        persistedState.currentNodeId &&
-        wizardData[persistedState.currentNodeId]
-      ) {
+      if (persistedState?.currentNodeId && wizardData[persistedState.currentNodeId]) {
         // Always sync with persisted state if the node exists
         if (persistedState.currentNodeId !== dialogueState.currentNodeId) {
           console.log(
@@ -240,11 +236,7 @@ export function useWizardDialogue({
             console.log('🆕 Starting specialized flow from beginning (different flow)');
           }
           // Priority 4: If we have persisted state but the node doesn't exist in this flow, use start
-          else if (
-            persistedState &&
-            persistedState.currentNodeId &&
-            !nodes[persistedState.currentNodeId]
-          ) {
+          else if (persistedState?.currentNodeId && !nodes[persistedState.currentNodeId]) {
             startNodeId = 'start';
             console.log('⚠️ Persisted node not found in flow, starting from beginning');
           }
@@ -270,7 +262,7 @@ export function useWizardDialogue({
             '✨ Dialogue state successfully updated with node:',
             startNodeId,
             'Text preview:',
-            nodes[startNodeId]?.text?.substring(0, 50) + '...'
+            `${nodes[startNodeId]?.text?.substring(0, 50)}...`
           );
         } else {
           console.error(
@@ -346,6 +338,11 @@ export function useWizardDialogue({
     sessionActions.selectedGameType,
     sessionActions.gameType,
     sessionActions.transitionToSpecializedFlow,
+    dialogueState.currentNodeId,
+    failedFlowPaths.has,
+    isFlowLoading,
+    loadedFlowPath,
+    wizardData,
   ]);
 
   // Update current node when ID changes
@@ -425,7 +422,7 @@ export function useWizardDialogue({
       // Return the option for additional handling in the parent component
       return option;
     },
-    [navigateToNode]
+    [navigateToNode, sessionActions.gameType]
   );
 
   const advance = useCallback(() => {

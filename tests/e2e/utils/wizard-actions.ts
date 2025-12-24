@@ -1,4 +1,4 @@
-import { expect, Locator, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import type { ErrorDetector } from './error-detection';
 
 export interface WizardState {

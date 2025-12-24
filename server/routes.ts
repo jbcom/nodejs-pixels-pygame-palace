@@ -5,11 +5,11 @@ import { storage } from './storage';
 
 export function registerRoutes(app: Express): void {
   // Get all lessons
-  app.get('/api/lessons', async (req, res) => {
+  app.get('/api/lessons', async (_req, res) => {
     try {
       const lessons = await storage.getLessons();
       res.json(lessons);
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to fetch lessons' });
     }
   });
@@ -25,18 +25,18 @@ export function registerRoutes(app: Express): void {
       }
 
       res.json(lesson);
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to fetch lesson' });
     }
   });
 
   // Get user progress for all lessons (mock user ID for now)
-  app.get('/api/progress', async (req, res) => {
+  app.get('/api/progress', async (_req, res) => {
     try {
       const userId = 'mock-user-id'; // In a real app, this would come from authentication
       const progress = await storage.getUserProgress(userId);
       res.json(progress);
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to fetch progress' });
     }
   });
@@ -49,7 +49,7 @@ export function registerRoutes(app: Express): void {
 
       const progress = await storage.getUserProgressForLesson(userId, lessonId);
       res.json(progress || null);
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to fetch lesson progress' });
     }
   });
@@ -94,18 +94,18 @@ export function registerRoutes(app: Express): void {
         output: 'Code received successfully. Execution handled client-side.',
         timestamp: new Date().toISOString(),
       });
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to process code' });
     }
   });
 
   // Get user's projects
-  app.get('/api/projects', async (req, res) => {
+  app.get('/api/projects', async (_req, res) => {
     try {
       const userId = 'mock-user-id'; // In a real app, this would come from authentication
       const projects = await storage.listProjects(userId);
       res.json(projects);
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to fetch projects' });
     }
   });
@@ -140,7 +140,7 @@ export function registerRoutes(app: Express): void {
       }
 
       res.json(project);
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to fetch project' });
     }
   });
@@ -198,7 +198,7 @@ export function registerRoutes(app: Express): void {
       const { id } = req.params;
       await storage.deleteProject(id);
       res.status(204).send();
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to delete project' });
     }
   });
@@ -206,11 +206,11 @@ export function registerRoutes(app: Express): void {
   // Gallery endpoints
 
   // Get all published projects for gallery
-  app.get('/api/gallery', async (req, res) => {
+  app.get('/api/gallery', async (_req, res) => {
     try {
       const publishedProjects = await storage.listPublishedProjects();
       res.json(publishedProjects);
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to fetch gallery projects' });
     }
   });
@@ -227,7 +227,7 @@ export function registerRoutes(app: Express): void {
       }
 
       res.json(project);
-    } catch (error) {
+    } catch (_error) {
       res.status(500).json({ message: 'Failed to fetch gallery project' });
     }
   });

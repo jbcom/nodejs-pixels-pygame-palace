@@ -1,7 +1,7 @@
 // Asset Library Test Page
 // Test component to verify the asset library system
 
-import { Grid3x3, Search, Sparkles } from 'lucide-react';
+import { Grid3x3, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import AssetBrowserWizard from '@/components/asset-browser-wizard';
 import { Button } from '@/components/ui/button';

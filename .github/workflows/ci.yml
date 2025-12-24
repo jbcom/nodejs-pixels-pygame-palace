@@ -53,11 +53,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         
-      - name: Lint check (if available)
-        run: |
-          if pnpm run lint --silent 2>/dev/null; then
-            pnpm run lint
-          else
-            echo "No lint script found, skipping..."
-          fi
-        continue-on-error: true
+      - name: Lint check
+        run: pnpm run lint

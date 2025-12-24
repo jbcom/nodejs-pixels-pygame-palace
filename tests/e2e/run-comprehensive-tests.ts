@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { exec } from 'child_process';
-import * as fs from 'fs';
-import * as path from 'path';
-import { promisify } from 'util';
+import { exec } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { promisify } from 'node:util';
 
 const execAsync = promisify(exec);
 
@@ -77,7 +77,7 @@ async function checkServerHealth() {
     const { stdout, stderr } = await execAsync('curl -f http://localhost:5000 > /dev/null 2>&1');
     console.log('✅ Server is running and responsive');
     return true;
-  } catch (error) {
+  } catch (_error) {
     console.log('⚠️ Server not responding, attempting to start...');
 
     try {

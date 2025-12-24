@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { ErrorDetector, withErrorDetection } from './utils/error-detection';
-import { WizardNavigator, withWizardNavigation } from './utils/wizard-actions';
+import { withErrorDetection } from './utils/error-detection';
+import { withWizardNavigation } from './utils/wizard-actions';
 
 test.describe('Asset Browser Tests', () => {
   test.describe.configure({ mode: 'parallel' });
 
   test('Asset browser opens and loads assets', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       // Test direct asset test route
       await page.goto('/asset-test', { waitUntil: 'networkidle' });
 
@@ -74,7 +74,7 @@ test.describe('Asset Browser Tests', () => {
   });
 
   test('Asset categories and filtering work correctly', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       await page.goto('/asset-test', { waitUntil: 'networkidle' });
       await page.waitForTimeout(2000);
 
@@ -135,7 +135,7 @@ test.describe('Asset Browser Tests', () => {
   });
 
   test('Asset selection and preview work correctly', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       await page.goto('/asset-test', { waitUntil: 'networkidle' });
       await page.waitForTimeout(2000);
 
@@ -289,7 +289,7 @@ test.describe('Asset Browser Tests', () => {
   });
 
   test('Asset browser handles different screen sizes', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       const resolutions = [
         { width: 1920, height: 1080, name: 'desktop' },
         { width: 1024, height: 768, name: 'tablet-landscape' },
@@ -370,7 +370,7 @@ test.describe('Asset Browser Tests', () => {
   });
 
   test('Asset loading and error handling', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       await page.goto('/asset-test', { waitUntil: 'networkidle' });
       await page.waitForTimeout(3000);
 

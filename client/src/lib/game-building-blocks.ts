@@ -9633,7 +9633,7 @@ GRAY = (128, 128, 128)
       selectedSystems.add(component.id);
       const selectedOption = choice.choice === 'A' ? component.optionA : component.optionB;
       template += `\n# ${component.title} - ${selectedOption.title}\n`;
-      template += selectedOption.pythonCode + '\n';
+      template += `${selectedOption.pythonCode}\n`;
     }
   }
 

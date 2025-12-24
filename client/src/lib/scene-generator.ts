@@ -28,7 +28,7 @@ export interface GeneratorOptions {
 }
 
 // Template parameter replacer
-function replaceTemplateParams(
+function _replaceTemplateParams(
   code: string,
   params: Record<string, any>,
   assets: Record<string, string> = {}
@@ -222,10 +222,10 @@ platforms = [
 ]
 
 # Component Systems
-${componentSystems.movement.length > 0 ? '# Movement Systems\n' + componentSystems.movement.join('\n') : ''}
-${componentSystems.combat.length > 0 ? '\n# Combat Systems\n' + componentSystems.combat.join('\n') : ''}
-${componentSystems.ui.length > 0 ? '\n# UI Systems\n' + componentSystems.ui.join('\n') : ''}
-${componentSystems.world.length > 0 ? '\n# World Systems\n' + componentSystems.world.join('\n') : ''}
+${componentSystems.movement.length > 0 ? `# Movement Systems\n${componentSystems.movement.join('\n')}` : ''}
+${componentSystems.combat.length > 0 ? `\n# Combat Systems\n${componentSystems.combat.join('\n')}` : ''}
+${componentSystems.ui.length > 0 ? `\n# UI Systems\n${componentSystems.ui.join('\n')}` : ''}
+${componentSystems.world.length > 0 ? `\n# World Systems\n${componentSystems.world.join('\n')}` : ''}
 
 # Initialize component systems
 ${selectedComponents

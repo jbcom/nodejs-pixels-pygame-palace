@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { ErrorDetector, withErrorDetection } from './utils/error-detection';
-import { WizardNavigator, withWizardNavigation } from './utils/wizard-actions';
+import { withErrorDetection } from './utils/error-detection';
+import { withWizardNavigation } from './utils/wizard-actions';
 
 test.describe('WYSIWYG Editor Tests', () => {
   test.describe.configure({ mode: 'parallel' });
@@ -415,7 +415,7 @@ test.describe('WYSIWYG Editor Tests', () => {
 
               if (codeContent && codeContent.length > 10) {
                 console.log('Code generation is working');
-                console.log('Generated code preview:', codeContent.substring(0, 100) + '...');
+                console.log('Generated code preview:', `${codeContent.substring(0, 100)}...`);
 
                 // Check if it looks like Python/PyGame code
                 const isPythonCode =

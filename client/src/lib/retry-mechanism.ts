@@ -3,7 +3,7 @@
  * Provides robust retry logic for failed operations with exponential backoff
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export interface RetryOptions {
   /** Maximum number of retry attempts */
@@ -218,7 +218,7 @@ class RetryMechanism {
     const pythonRetryOptions: RetryOptions = {
       maxAttempts: 2, // Don't retry Python errors as much
       baseDelay: 500,
-      shouldRetry: (error: any, attempt: number) => {
+      shouldRetry: (error: any, _attempt: number) => {
         // Only retry on specific Python runtime errors
         if (error?.message?.includes('pyodide not ready')) return true;
         if (error?.message?.includes('Worker error')) return true;
@@ -248,7 +248,7 @@ class RetryMechanism {
     const fileRetryOptions: RetryOptions = {
       maxAttempts: 3,
       baseDelay: 2000,
-      shouldRetry: (error: any, attempt: number) => {
+      shouldRetry: (error: any, _attempt: number) => {
         // Retry network and server errors for file operations
         if (error?.message?.includes('Failed to fetch')) return true;
         if (error?.status >= 500) return true;
@@ -327,7 +327,7 @@ export function useRetry(maxRetries = 3) {
             canRetry: attempt < maxRetries,
           }));
         },
-        onFinalFailure: (error, attempts) => {
+        onFinalFailure: (error, _attempts) => {
           setState((prev: UseRetryState) => ({
             ...prev,
             lastError: error,
@@ -386,7 +386,7 @@ export const educationalRetry = {
     onMessage?: (message: string) => void
   ): Promise<T> {
     const result = await retryMechanism.withRetry(operation, {
-      onRetry: (error, attempt) => {
+      onRetry: (_error, attempt) => {
         const messages = [
           `Having trouble ${context}. Trying again... (attempt ${attempt})`,
           `Still working on ${context}. This might take a moment... (attempt ${attempt})`,
@@ -395,7 +395,7 @@ export const educationalRetry = {
         const message = messages[Math.min(attempt - 1, messages.length - 1)];
         onMessage?.(message);
       },
-      onFinalFailure: (error) => {
+      onFinalFailure: (_error) => {
         onMessage?.(`Unable to complete ${context}. Please check your connection and try again.`);
       },
     });

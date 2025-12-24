@@ -1,5 +1,5 @@
+import { createServer } from 'node:http';
 import express, { type NextFunction, type Request, type Response } from 'express';
-import { createServer } from 'http';
 import { registerRoutes } from './routes';
 import { log, serveStatic, setupVite } from './vite';
 
@@ -28,7 +28,7 @@ app.use((req, res, next) => {
       }
 
       if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + '…';
+        logLine = `${logLine.slice(0, 79)}…`;
       }
 
       log(logLine);

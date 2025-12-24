@@ -355,7 +355,7 @@ export function isStorageAvailable(): boolean {
     sessionStorage.setItem(test, test);
     sessionStorage.removeItem(test);
     return true;
-  } catch (e) {
+  } catch (_e) {
     return false;
   }
 }

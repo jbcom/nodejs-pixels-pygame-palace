@@ -1,5 +1,5 @@
-import fs from 'fs';
-import { Builder, By, Key, until } from 'selenium-webdriver';
+import fs from 'node:fs';
+import { Builder, By, until } from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome.js';
 
 // Test configurations for different devices
@@ -114,7 +114,7 @@ async function testLayoutDetection(device) {
       // Should have vertical stack layout
       console.log('✅ Checking for mobile portrait layout...');
       try {
-        const verticalStack = await driver.findElement(By.css('.h-screen.flex.flex-col'));
+        const _verticalStack = await driver.findElement(By.css('.h-screen.flex.flex-col'));
         console.log('✅ Found vertical stack layout');
 
         // Should NOT have header title
@@ -130,7 +130,7 @@ async function testLayoutDetection(device) {
       // Should have 20/80 grid layout
       console.log('✅ Checking for mobile landscape layout...');
       try {
-        const gridLayout = await driver.findElement(By.css('.grid.grid-cols-\\[20\\%\\,80\\%\\]'));
+        const _gridLayout = await driver.findElement(By.css('.grid.grid-cols-\\[20\\%\\,80\\%\\]'));
         console.log('✅ Found 20/80 grid layout');
 
         // Should NOT have hamburger menu button
@@ -148,7 +148,7 @@ async function testLayoutDetection(device) {
       // Should have centered card layout
       console.log('✅ Checking for desktop layout...');
       try {
-        const centeredCard = await driver.findElement(
+        const _centeredCard = await driver.findElement(
           By.css('.fixed.inset-0.flex.items-center.justify-center')
         );
         console.log('✅ Found centered desktop layout');
@@ -224,7 +224,7 @@ async function testEdgeSwipe(device) {
         By.css('[role="dialog"], .fixed.inset-0, [data-testid*="menu"]')
       );
       menuOpened = menuElements.some(async (el) => await el.isDisplayed());
-    } catch (e) {
+    } catch (_e) {
       // Menu might not be found, that's ok
     }
 
@@ -302,7 +302,7 @@ async function runAllTests() {
 // Run tests if this file is executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   runAllTests()
-    .then((results) => {
+    .then((_results) => {
       console.log('\n✨ All tests completed!');
       process.exit(0);
     })

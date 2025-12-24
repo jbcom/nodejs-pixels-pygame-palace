@@ -1,5 +1,4 @@
 import pixelCelebrating from '@assets/pixel/Pixel_celebrating_victory_expression_24b7a377.png';
-import pixelCoding from '@assets/pixel/Pixel_coding_programming_expression_56de8ca0.png';
 import pixelEncouraging from '@assets/pixel/Pixel_encouraging_supportive_expression_cf958090.png';
 // Import Pixel images
 import pixelHappy from '@assets/pixel/Pixel_happy_excited_expression_22a41625.png';
@@ -13,7 +12,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Code2,
-  Heart,
   Rocket,
   Sparkles,
   Trophy,
@@ -28,12 +26,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { type GradingContext, gradeCode } from '@/lib/grading';
-import {
-  createTypeScriptRunner,
-  type ExecutionResult,
-  type TypeScriptRunner,
-} from '@/lib/typescript-runner';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { createTypeScriptRunner } from '@/lib/typescript-runner';
 
 // Pixel's conversational dialogues for different situations
 const pixelDialogues = {
@@ -88,10 +82,10 @@ export default function LessonEnhanced() {
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
-  const [showIntroModal, setShowIntroModal] = useState(false);
+  const [_showIntroModal, setShowIntroModal] = useState(false);
   const [pixelDialogue, setPixelDialogue] = useState('');
   const [pixelImage, setPixelImage] = useState(pixelTeaching);
-  const [showHint, setShowHint] = useState(false);
+  const [_showHint, setShowHint] = useState(false);
   const [currentHintIndex, setCurrentHintIndex] = useState(0);
   const [gradingResult, setGradingResult] = useState<{
     passed: boolean;
@@ -134,7 +128,7 @@ export default function LessonEnhanced() {
       } else if (lesson.content.steps[progress.currentStep]?.initialCode) {
         setCode(lesson.content.steps[progress.currentStep].initialCode);
       }
-    } else if (lesson && lesson.content.steps[0]) {
+    } else if (lesson?.content.steps[0]) {
       setCode(lesson.content.steps[0].initialCode);
       // Show intro modal for new lessons (no progress yet)
       setShowIntroModal(true);
@@ -149,7 +143,7 @@ export default function LessonEnhanced() {
       setShowHint(false);
       setCurrentHintIndex(0);
     }
-  }, [currentStepIndex, currentStep]);
+  }, [currentStep]);
 
   const executeCode = async (inputValues: string = '', runAutoGrading = false) => {
     if (!typescriptRunner || !code.trim()) {
@@ -258,7 +252,7 @@ export default function LessonEnhanced() {
   };
 
   const showNextHint = () => {
-    if (currentStep && currentStep.hints && currentHintIndex < currentStep.hints.length) {
+    if (currentStep?.hints && currentHintIndex < currentStep.hints.length) {
       const hint = currentStep.hints[currentHintIndex];
       setPixelDialogue(getRandomDialogue(pixelDialogues.hint) + hint);
       setPixelImage(pixelEncouraging);
@@ -328,9 +322,7 @@ export default function LessonEnhanced() {
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
           />
-          <p className="text-purple-600 dark:text-purple-400">
-            Loading your lesson...
-          </p>
+          <p className="text-purple-600 dark:text-purple-400">Loading your lesson...</p>
         </div>
       </div>
     );
@@ -565,13 +557,9 @@ export default function LessonEnhanced() {
                 >
                   <h4 className="font-semibold mb-2 flex items-center">
                     {error ? (
-                      <>
-                        <span className="text-red-600 dark:text-red-400">Error Output</span>
-                      </>
+                      <span className="text-red-600 dark:text-red-400">Error Output</span>
                     ) : (
-                      <>
-                        <span className="text-green-600 dark:text-green-400">Output</span>
-                      </>
+                      <span className="text-green-600 dark:text-green-400">Output</span>
                     )}
                   </h4>
                   <pre className="whitespace-pre-wrap text-sm font-mono">{error || output}</pre>

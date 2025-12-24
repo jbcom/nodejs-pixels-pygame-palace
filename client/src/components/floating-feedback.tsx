@@ -76,7 +76,7 @@ export default function FloatingFeedback({
         title: 'Solution copied!',
         description: 'The solution has been copied to your clipboard.',
       });
-    } catch (err) {
+    } catch (_err) {
       toast({
         title: 'Failed to copy',
         description: 'Please try selecting and copying the text manually.',
@@ -177,24 +177,22 @@ export default function FloatingFeedback({
                   </p>
                 </motion.div>
               ) : (
-                <>
-                  {step.hints.length > 0 && (
-                    <div className="space-y-3">
-                      {step.hints.map((hint, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="flex gap-2"
-                        >
-                          <Sparkles className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
-                          <p className="text-base text-muted-foreground leading-relaxed">{hint}</p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  )}
-                </>
+                step.hints.length > 0 && (
+                  <div className="space-y-3">
+                    {step.hints.map((hint, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex gap-2"
+                      >
+                        <Sparkles className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
+                        <p className="text-base text-muted-foreground leading-relaxed">{hint}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                )
               )}
 
               <div className="flex items-center gap-3 pt-3">

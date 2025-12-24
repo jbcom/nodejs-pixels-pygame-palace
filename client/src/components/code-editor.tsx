@@ -1,7 +1,6 @@
 import { CheckCircle2, Keyboard, Play, RotateCcw, Target } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -155,7 +154,7 @@ export default function CodeEditor({
         }
       }
     };
-  }, []); // Empty dependency array is intentional - we only want to load Monaco once
+  }, [code, inputValues, onChange, onExecute]); // Empty dependency array is intentional - we only want to load Monaco once
 
   useEffect(() => {
     try {
@@ -226,7 +225,7 @@ export default function CodeEditor({
         )}
 
         {/* Enhanced Expected Output */}
-        {currentStep && currentStep.tests && currentStep.tests.length > 0 && (
+        {currentStep?.tests && currentStep.tests.length > 0 && (
           <div className="mb-6 p-6 bg-gradient-to-br from-success/15 to-success/5 rounded-xl border-2 border-success/40 shadow-lg">
             <div className="flex items-center gap-3 mb-4">
               <Target className="h-6 w-6 text-success" />

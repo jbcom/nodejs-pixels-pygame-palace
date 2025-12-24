@@ -3,7 +3,6 @@
  * Tests various device resolutions to ensure no horizontal overflow occurs
  */
 
-import assert from 'assert';
 import { Browser, Builder, By, until, type WebDriver } from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome';
 
@@ -155,7 +154,7 @@ class ResponsiveOverflowTest {
 
       // Take screenshot for debugging
       const screenshot = await this.driver.takeScreenshot();
-      const fs = require('fs');
+      const fs = require('node:fs');
       const screenshotPath = `/tmp/overflow_${name.replace(/\\s+/g, '_')}_${Date.now()}.png`;
       fs.writeFileSync(screenshotPath, screenshot, 'base64');
       console.error(`  📸 Screenshot saved: ${screenshotPath}`);
@@ -188,7 +187,7 @@ class ResponsiveOverflowTest {
           console.log(`  ✅ Dialogue options layout OK`);
         }
       }
-    } catch (e) {
+    } catch (_e) {
       // No options found, that's okay
     }
   }
@@ -214,10 +213,12 @@ class ResponsiveOverflowTest {
         }
       }
 
-      console.log('\\n' + '='.repeat(60));
+      console.log(`\\n${'='.repeat(60)}`);
       if (failedTests.length > 0) {
-        console.error('\\n❌ FAILED TESTS:');
-        failedTests.forEach((failure) => console.error(`  - ${failure}`));
+        console.error('\n❌ FAILED TESTS:');
+        for (const failure of failedTests) {
+          console.error(`  - ${failure}`);
+        }
         throw new Error(`${failedTests.length} resolution(s) have overflow issues`);
       } else {
         console.log('\\n✅ All resolutions passed overflow tests!');

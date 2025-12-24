@@ -6,8 +6,6 @@ import {
   createMockWizardNode,
   LocalStorageMock,
   SessionStorageMock,
-  simulatePageRefresh,
-  waitFor,
 } from '@tests/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as persistence from '@/lib/persistence';

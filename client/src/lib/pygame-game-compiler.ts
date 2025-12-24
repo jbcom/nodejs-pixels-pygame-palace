@@ -3,7 +3,6 @@
 
 import type { GameAsset } from '@/lib/asset-library/asset-types';
 import { pygameComponents } from '@/lib/pygame-components';
-import { PygameComponent } from '@/lib/pygame-components/types';
 
 export function compilePythonGame(
   selectedComponents: Record<string, string>, // componentId -> variant
@@ -162,7 +161,7 @@ function generateTitleScreen(assets: GameAsset[]): string {
 `;
 }
 
-function generateGameplay(components: Record<string, string>, assets: GameAsset[]): string {
+function generateGameplay(components: Record<string, string>, _assets: GameAsset[]): string {
   let gameplayCode = `
     def run_gameplay(self, dt):
         keys = pygame.key.get_pressed()
@@ -250,7 +249,7 @@ function generateGameplay(components: Record<string, string>, assets: GameAsset[
   return gameplayCode;
 }
 
-function generateEndingScreen(components: Record<string, string>, assets: GameAsset[]): string {
+function generateEndingScreen(components: Record<string, string>, _assets: GameAsset[]): string {
   const scoreVariant = components['score'] || 'A';
 
   return `

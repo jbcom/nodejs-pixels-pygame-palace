@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { ErrorDetector, withErrorDetection } from './utils/error-detection';
-import { WizardNavigator, withWizardNavigation } from './utils/wizard-actions';
+import { withErrorDetection } from './utils/error-detection';
+import { withWizardNavigation } from './utils/wizard-actions';
 
 test.describe('Pixel Animation Tests', () => {
   test.describe.configure({ mode: 'parallel' });
@@ -139,7 +139,7 @@ test.describe('Pixel Animation Tests', () => {
   });
 
   test('Pixel presence system works across different pages', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       // Test pixel presence on different routes
       const routes = [
         { path: '/', expectPixel: true, description: 'Home page' },

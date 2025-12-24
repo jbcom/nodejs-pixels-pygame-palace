@@ -254,7 +254,9 @@ class ErrorTracker {
         .sort(([, a], [, b]) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
         .slice(0, this.trackedErrors.size - this.maxErrors);
 
-      oldestErrors.forEach(([id]) => this.trackedErrors.delete(id));
+      oldestErrors.forEach(([id]) => {
+        this.trackedErrors.delete(id);
+      });
     }
 
     // Persist data

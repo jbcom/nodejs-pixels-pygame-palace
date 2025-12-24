@@ -1,11 +1,11 @@
-import { exec } from 'child_process';
-import * as fs from 'fs/promises';
-import * as path from 'path';
-import { Builder, By, Capabilities, until, type WebDriver } from 'selenium-webdriver';
+import { exec } from 'node:child_process';
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
+import { promisify } from 'node:util';
+import { Builder, By, until, type WebDriver } from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome';
-import { promisify } from 'util';
 
-const execAsync = promisify(exec);
+const _execAsync = promisify(exec);
 
 // Resolution configurations for comprehensive testing
 const RESOLUTIONS = {
@@ -89,7 +89,7 @@ class ResolutionTestRunner {
         const errorText = await errorOverlay[0].getText();
         return { hasError: true, errorMessage: errorText };
       }
-    } catch (e) {
+    } catch (_e) {
       // No error overlay found
     }
 
@@ -127,7 +127,7 @@ class ResolutionTestRunner {
 
       // Check responsive layout based on resolution
       const body = await this.driver!.findElement(By.tagName('body'));
-      const bodyClass = await body.getAttribute('class');
+      const _bodyClass = await body.getAttribute('class');
 
       // Verify Pixel avatar is visible
       await this.driver!.wait(
@@ -181,7 +181,7 @@ class ResolutionTestRunner {
         try {
           const screenshot = await this.driver.takeScreenshot();
           await this.saveScreenshot(screenshot, `${resolutionName}-failure`);
-        } catch (e) {
+        } catch (_e) {
           console.error('Could not capture failure screenshot');
         }
       }
@@ -228,7 +228,7 @@ class ResolutionTestRunner {
           3000
         );
         layoutTests.hasVerticalStack = true;
-      } catch (e) {
+      } catch (_e) {
         console.log('  ⚠️ No vertical stack found for portrait');
       }
     }
@@ -240,7 +240,7 @@ class ResolutionTestRunner {
           By.css('.grid-cols-[20%_80%], .landscape-split, [class*="grid-cols"]')
         );
         layoutTests.has20_80Split = grid.length > 0;
-      } catch (e) {
+      } catch (_e) {
         console.log('  ⚠️ No 20/80 split found for landscape');
       }
     }
@@ -262,7 +262,7 @@ class ResolutionTestRunner {
 
   async runAllTests(): Promise<void> {
     console.log('🚀 Starting Comprehensive Selenium Resolution Tests');
-    console.log('=' + '='.repeat(70));
+    console.log(`=${'='.repeat(70)}`);
 
     const startTime = Date.now();
     let passedCount = 0;
@@ -306,7 +306,7 @@ class ResolutionTestRunner {
 
     // Print summary
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-    console.log('\n' + '='.repeat(70));
+    console.log(`\n${'='.repeat(70)}`);
     console.log('📊 Test Summary');
     console.log('='.repeat(70));
     console.log(`Total Tests: ${passedCount + failedCount}`);

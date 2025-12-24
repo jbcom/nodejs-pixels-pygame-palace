@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import PygameLivePreview, { type GameChoice } from './pygame-live-preview';
 import { DialogueText, getDialogueHelpers, useWizardDialogue } from './wizard-dialogue-engine';
-import type { GameChoice as GameChoiceType, WizardOption } from './wizard-types';
+import type { WizardOption } from './wizard-types';
 
 interface WizardWithPreviewProps {
   pyodide?: any;
@@ -30,8 +30,8 @@ export default function WizardWithPreview({ pyodide, className }: WizardWithPrev
   });
 
   const [livePreviewChoices, setLivePreviewChoices] = useState<GameChoice[]>([]);
-  const [showComparison, setShowComparison] = useState(false);
-  const [alternativeChoice, setAlternativeChoice] = useState<GameChoice | undefined>();
+  const [showComparison, _setShowComparison] = useState(false);
+  const [alternativeChoice, _setAlternativeChoice] = useState<GameChoice | undefined>();
   const [pixelComments, setPixelComments] = useState<string[]>([]);
 
   const helpers = getDialogueHelpers(dialogueState, sessionActions);

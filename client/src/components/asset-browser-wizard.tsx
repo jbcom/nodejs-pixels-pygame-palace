@@ -1,20 +1,19 @@
 // Asset Browser Component for PyGame Palace Wizard
 // Visual browser for CC0 game assets with filtering and preview
 
-import { Check, Filter, Grid3x3, Info, List, Search, Sparkles, X } from 'lucide-react';
+import { Check, Grid3x3, List, Search, Sparkles, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { assetManager } from '@/lib/asset-library/asset-manager';
 import type {
   AssetCategory,
   AssetFilter,
-  AssetSelection,
   AssetType,
   BackgroundCategory,
   GameAsset,
@@ -46,7 +45,7 @@ export default function AssetBrowserWizard({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedAssets, setSelectedAssets] = useState<Set<string>>(new Set());
-  const [hoveredAsset, setHoveredAsset] = useState<GameAsset | null>(null);
+  const [_hoveredAsset, setHoveredAsset] = useState<GameAsset | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -91,12 +90,12 @@ export default function AssetBrowserWizard({
   const paginatedAssets = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     return filteredAssets.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredAssets, currentPage, itemsPerPage]);
+  }, [filteredAssets, currentPage]);
 
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, selectedTab, selectedCategory, assetType]);
+  }, []);
 
   // Handle asset selection
   const handleAssetClick = useCallback(

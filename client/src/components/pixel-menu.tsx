@@ -3,19 +3,7 @@ import pixelExcited from '@assets/pixel/Pixel_celebrating_victory_expression_24b
 import pixelHappy from '@assets/pixel/Pixel_happy_excited_expression_22a41625.png';
 import pixelThinking from '@assets/pixel/Pixel_thinking_pondering_expression_0ffffedb.png';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  BookOpen,
-  ChevronLeft,
-  Clock,
-  Code2,
-  Download,
-  Gamepad2,
-  Home,
-  Settings,
-  TrendingUp,
-  Trophy,
-  X,
-} from 'lucide-react';
+import { BookOpen, Clock, Download, Gamepad2, Home, TrendingUp, Trophy, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { Button } from '@/components/ui/button';

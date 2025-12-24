@@ -23,38 +23,42 @@ export async function validateAst(
 
     switch (ruleType) {
       case 'variable_declaration':
-      case 'variable_assignment':
+      case 'variable_assignment': {
         // Match const, let, var assignments
-        const varRegex = new RegExp(`(const\|let\|var)\\s+${name ? name : '[\\w$]+'}\\s*=`, 'g');
+        const varRegex = new RegExp(`(const|let|var)\\s+${name ? name : '[\\w$]+'}\\s*=`, 'g');
         count = (code.match(varRegex) || []).length;
         if (count < minCount) {
           errors.push(`Missing required variable ${name ? `"${name}"` : 'declaration'}`);
         }
         break;
+      }
 
-      case 'function_call':
+      case 'function_call': {
         const funcRegex = new RegExp(`${name ? name.replace('.', '\\.') : '[\\w$]+'}\\s*\\(`, 'g');
         count = (code.match(funcRegex) || []).length;
         if (count < minCount) {
           errors.push(`Missing required function call ${name ? `"${name}"` : ''}`);
         }
         break;
+      }
 
-      case 'interface_declaration':
+      case 'interface_declaration': {
         const interfaceRegex = new RegExp(`interface\\s+${name ? name : '[\\w$]+'}\\s*{`, 'g');
         count = (code.match(interfaceRegex) || []).length;
         if (count < minCount) {
           errors.push(`Missing required interface ${name ? `"${name}"` : 'declaration'}`);
         }
         break;
+      }
 
-      case 'class_declaration':
+      case 'class_declaration': {
         const classRegex = new RegExp(`class\\s+${name ? name : '[\\w$]+'}`, 'g');
         count = (code.match(classRegex) || []).length;
         if (count < minCount) {
           errors.push(`Missing required class ${name ? `"${name}"` : 'declaration'}`);
         }
         break;
+      }
 
       case 'if_statement':
         count = (code.match(/if\s*\(/g) || []).length;
@@ -63,13 +67,14 @@ export async function validateAst(
         }
         break;
 
-      case 'loop':
+      case 'loop': {
         const loopRegex = /(for|while)\s*\(|(\.forEach|\.map|\.filter)\(/g;
         count = (code.match(loopRegex) || []).length;
         if (count < minCount) {
           errors.push('Missing required loop (for, while, or array method)');
         }
         break;
+      }
 
       case 'type_annotation':
         // Match : string, : number, etc.

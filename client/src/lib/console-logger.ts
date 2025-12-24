@@ -74,7 +74,7 @@ class ConsoleLogger {
       if (savedCategories) {
         this.enabledCategories = new Set(JSON.parse(savedCategories) as LogCategory[]);
       }
-    } catch (e) {
+    } catch (_e) {
       // Ignore localStorage errors
     }
   }
@@ -359,7 +359,7 @@ class ConsoleLogger {
         'pygame-log-categories',
         JSON.stringify(Array.from(this.enabledCategories))
       );
-    } catch (e) {
+    } catch (_e) {
       // Ignore localStorage errors
     }
   }

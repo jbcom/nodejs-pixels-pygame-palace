@@ -19,21 +19,23 @@ export class TypeScriptRunner {
 
   private mockConsole = {
     log: (...args: any[]) => {
-      this.outputBuffer.push(args.map(arg => 
-        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
-      ).join(' '));
+      this.outputBuffer.push(
+        args
+          .map((arg) => (typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)))
+          .join(' ')
+      );
     },
     error: (...args: any[]) => {
       this.outputBuffer.push(`ERROR: ${args.join(' ')}`);
     },
     warn: (...args: any[]) => {
       this.outputBuffer.push(`WARN: ${args.join(' ')}`);
-    }
+    },
   };
 
   async runSnippet(code: string): Promise<ExecutionResult> {
     this.outputBuffer = [];
-    
+
     try {
       // Create a context with Strata classes and mock console
       const context = {
@@ -45,7 +47,7 @@ export class TypeScriptRunner {
         String,
         Number,
         Boolean,
-        Date
+        Date,
       };
 
       // Remove imports from code as they are provided in context
@@ -57,12 +59,12 @@ export class TypeScriptRunner {
 
       return {
         output: this.outputBuffer.join('\n'),
-        error: null
+        error: null,
       };
     } catch (err) {
       return {
         output: this.outputBuffer.join('\n'),
-        error: err instanceof Error ? err.message : String(err)
+        error: err instanceof Error ? err.message : String(err),
       };
     }
   }

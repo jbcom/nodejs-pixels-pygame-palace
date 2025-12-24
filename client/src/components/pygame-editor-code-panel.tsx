@@ -60,7 +60,7 @@ export default function PygameEditorCodePanel({
     const componentVars: string[] = [];
     components.forEach((comp, index) => {
       const componentDef = getComponentById(comp.componentId);
-      if (componentDef && componentDef.generateCode) {
+      if (componentDef?.generateCode) {
         const varName = `${componentDef.type}_${index}`;
         componentVars.push(varName);
         const componentCode = componentDef.generateCode({

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { ErrorDetector, withErrorDetection } from './utils/error-detection';
+import { withErrorDetection } from './utils/error-detection';
 
 // Test data for all application routes
 const routes = [
@@ -37,7 +37,7 @@ test.describe('Smoke Tests - Basic Page Loading', () => {
     test(`${route.name} loads without errors on all resolutions`, async ({ page }) => {
       await withErrorDetection(
         page,
-        async (errorDetector) => {
+        async (_errorDetector) => {
           // Navigate to the route
           await page.goto(route.path, { waitUntil: 'networkidle' });
 
@@ -127,7 +127,7 @@ test.describe('Responsive Layout Verification', () => {
 
   test('Desktop layouts render correctly (1920x1080)', async ({ page }) => {
     // This test will run with desktop viewport from config
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       for (const route of routes) {
         await page.goto(route.path, { waitUntil: 'networkidle' });
         await expect(page.locator(route.keyElement)).toBeVisible();
@@ -157,7 +157,7 @@ test.describe('Responsive Layout Verification', () => {
   });
 
   test('Tablet layouts adapt correctly', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       for (const route of routes) {
         await page.goto(route.path, { waitUntil: 'networkidle' });
         await expect(page.locator(route.keyElement)).toBeVisible();
@@ -179,7 +179,7 @@ test.describe('Responsive Layout Verification', () => {
   });
 
   test('Mobile portrait layouts stack vertically (375x667)', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       for (const route of routes) {
         await page.goto(route.path, { waitUntil: 'networkidle' });
         await expect(page.locator(route.keyElement)).toBeVisible();
@@ -195,7 +195,7 @@ test.describe('Responsive Layout Verification', () => {
 
           // Title should be hidden on mobile
           const title = page.locator('h1').first();
-          const titleVisible = await title.isVisible().catch(() => false);
+          const _titleVisible = await title.isVisible().catch(() => false);
           // Note: Title might be present but visually hidden with CSS
 
           // Avatar should be visible
@@ -208,7 +208,7 @@ test.describe('Responsive Layout Verification', () => {
   });
 
   test('Mobile landscape uses 20/80 grid layout (667x375)', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       for (const route of routes) {
         await page.goto(route.path, { waitUntil: 'networkidle' });
         await expect(page.locator(route.keyElement)).toBeVisible();
@@ -291,7 +291,7 @@ test.describe('Network and Asset Loading', () => {
 
 test.describe('Performance and Rendering', () => {
   test('Pages render within acceptable time limits', async ({ page }) => {
-    await withErrorDetection(page, async (errorDetector) => {
+    await withErrorDetection(page, async (_errorDetector) => {
       for (const route of routes) {
         const startTime = Date.now();
 

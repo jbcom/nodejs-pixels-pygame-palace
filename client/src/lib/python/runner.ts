@@ -47,7 +47,7 @@ export class PythonRunner {
 
   setInputValues(inputValues: string) {
     try {
-      if (inputValues && inputValues.trim()) {
+      if (inputValues?.trim()) {
         this.pyodide.runPython(`set_input_values_from_js("${inputValues.replace(/"/g, '\\"')}")`);
       } else {
         this.pyodide.runPython(`set_input_values_from_js("")`);

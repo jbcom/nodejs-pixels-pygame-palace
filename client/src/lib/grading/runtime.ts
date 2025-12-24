@@ -49,7 +49,7 @@ export async function validateRuntime(
 
         case 'is_numeric': {
           const numericValue = parseFloat(output.trim());
-          if (isNaN(numericValue)) {
+          if (Number.isNaN(numericValue)) {
             errors.push('Output should be a valid number');
           }
           break;
@@ -69,7 +69,7 @@ export async function validateRuntime(
           const value = parseFloat(output.trim());
           const min = params.min;
           const max = params.max;
-          if (isNaN(value) || value < min || value > max) {
+          if (Number.isNaN(value) || value < min || value > max) {
             errors.push(`Output should be a number between ${min} and ${max}`);
           }
           break;

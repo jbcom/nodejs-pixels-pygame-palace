@@ -28,7 +28,7 @@
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc --noEmit",
-    "lint": "biome check .",
+    "lint": "biome check --diagnostic-level=error .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "format:check": "biome format .",
@@ -37,7 +37,7 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
-    "docs": "typedoc --out docs/api src"
+    "docs": "typedoc --out docs/api client/src shared"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

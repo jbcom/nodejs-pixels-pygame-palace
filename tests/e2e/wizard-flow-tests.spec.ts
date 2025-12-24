@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { ErrorDetector, withErrorDetection } from './utils/error-detection';
-import { WizardNavigator, withWizardNavigation } from './utils/wizard-actions';
+import { withErrorDetection } from './utils/error-detection';
+import { withWizardNavigation } from './utils/wizard-actions';
 
 test.describe('Wizard Flow Tests', () => {
   test.describe.configure({ mode: 'parallel' });
@@ -470,7 +470,7 @@ test.describe('Wizard Responsive Behavior', () => {
 
           // Title should be hidden or not present
           const title = page.locator('h1').first();
-          const titleVisible = await title.isVisible().catch(() => false);
+          const _titleVisible = await title.isVisible().catch(() => false);
 
           // Avatar should be at top
           const avatar = page.locator('[data-testid="pixel-avatar"]');
@@ -480,7 +480,7 @@ test.describe('Wizard Responsive Behavior', () => {
           const optionsContainer = page.locator(
             '[data-testid="options-container"], .wizard-options'
           );
-          const hasScrollable = await optionsContainer
+          const _hasScrollable = await optionsContainer
             .evaluate(
               (el) =>
                 el.scrollHeight > el.clientHeight ||

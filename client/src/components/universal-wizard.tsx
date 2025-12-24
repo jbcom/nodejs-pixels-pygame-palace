@@ -17,7 +17,6 @@ import {
   clearWizardState,
   loadSessionState,
   loadUserPreferences,
-  PersistedSessionState,
   saveSessionState,
   saveUserPreferences,
 } from '@/lib/persistence';
@@ -26,7 +25,6 @@ import AssetBrowserWizard from './asset-browser-wizard';
 import PixelMenu from './pixel-menu';
 import PixelMinimizeAnimation from './pixel-minimize-animation';
 import PixelMinimized from './pixel-minimized';
-import PygameComponentSelector from './pygame-component-selector';
 import PygameRunner from './pygame-runner';
 import PygameWysiwygEditor from './pygame-wysiwyg-editor';
 import WizardCodeRunner from './wizard-code-runner';
@@ -74,7 +72,7 @@ export default function UniversalWizard({
   // Load UI state from sessionStorage
   const getInitialUIState = (): UIState => {
     const persistedSession = loadSessionState();
-    if (persistedSession && persistedSession.uiState) {
+    if (persistedSession?.uiState) {
       return persistedSession.uiState as UIState;
     }
     return {
@@ -290,7 +288,7 @@ export default function UniversalWizard({
         pyodideMode: true,
       }));
     }
-  }, [dialogueState.currentNode, setSessionActions]);
+  }, [dialogueState.currentNode, setSessionActions, dialogueState, sessionActions.gameType]);
 
   // Wrap handleOptionSelect to handle actions
   const handleOptionSelectWithAction = useCallback(
@@ -386,7 +384,7 @@ export default function UniversalWizard({
         }));
       } else if (option.action === 'showTitlePreset' || option.action === 'cycleTitlePreset') {
         // Show title screen preview for selected game type
-        const gameType = sessionActions.gameType || 'platformer';
+        const _gameType = sessionActions.gameType || 'platformer';
         setUiState((prev) => ({
           ...prev,
           embeddedComponent: 'pygame-runner',
@@ -570,46 +568,9 @@ export default function UniversalWizard({
           const toast = (window as any).toast || console.log;
           toast('Failed to export game. Please try again.');
         }
-      } else if (option.action === 'compileGameplayScene') {
-        // Compile gameplay scene from selected components
-        setSessionActions((prev) => ({
-          ...prev,
-          compiledScenes: {
-            ...prev.compiledScenes,
-            gameplay: true,
-          },
-        }));
-      } else if (option.action === 'compileEndScene') {
-        // Compile ending scene from selected components
-        setSessionActions((prev) => ({
-          ...prev,
-          compiledScenes: {
-            ...prev.compiledScenes,
-            ending: true,
-          },
-        }));
-      } else if (option.action === 'compileFullGame') {
-        // Compile all scenes into complete game
-        setSessionActions((prev) => ({
-          ...prev,
-          compiledScenes: {
-            ...prev.compiledScenes,
-            full: true,
-          },
-          gameAssembled: true,
-        }));
       } else if (option.action === 'tweakDifficulty') {
         // Adjust game difficulty settings
         console.log('Adjusting difficulty');
-      } else if (option.action === 'launchPyodideGame') {
-        // Launch the game with Pyodide runner
-        console.log('Launching game with Pyodide...');
-        setUiState((prev) => ({
-          ...prev,
-          embeddedComponent: 'pygame-runner',
-          previewMode: 'full',
-          gameRunnerOpen: true,
-        }));
       } else if (
         option.action === 'previewScene' ||
         option.action === 'previewGameplay' ||
@@ -638,13 +599,7 @@ export default function UniversalWizard({
       // Note: handleOptionSelect(option) is called at the beginning of this function
       // to ensure dialogue flow transitions work properly before UI actions
     },
-    [
-      handleOptionSelect,
-      dialogueState.currentNode,
-      setSessionActions,
-      sessionActions,
-      selectedAssets,
-    ]
+    [handleOptionSelect, setSessionActions, sessionActions, selectedAssets]
   );
 
   // Render dialogue content for desktop/tablet

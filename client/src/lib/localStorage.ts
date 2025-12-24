@@ -2,7 +2,7 @@
 import type { UserProgress } from '@shared/schema';
 
 const STORAGE_PREFIX = 'pygame_academy_';
-const PROGRESS_KEY = STORAGE_PREFIX + 'progress';
+const PROGRESS_KEY = `${STORAGE_PREFIX}progress`;
 
 export const localStorageService = {
   // Get all progress
