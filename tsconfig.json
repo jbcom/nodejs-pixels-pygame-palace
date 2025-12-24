@@ -19,7 +19,8 @@
     "paths": {
       "@/*": ["./client/src/*"],
       "@shared/*": ["./shared/*"],
-      "@tests/*": ["./tests/*"]
+      "@tests/*": ["./tests/*"],
+      "@strata/engine": ["./client/src/lib/strata-engine.ts"]
     }
   }
 }

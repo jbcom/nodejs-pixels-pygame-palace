@@ -6,13 +6,12 @@ export async function gradeCode(
   context: GradingContext,
   preExecutionResult?: { output: string; error: string }
 ): Promise<GradeResult> {
-  const { code, step, input, runner, pyodide } = context;
+  const { code, step, input, runner } = context;
 
   console.log('🎯 Starting grading for step:', step?.id);
 
   try {
     let actualOutput: string;
-    const executionError: string | null = null;
 
     // Use pre-execution result if provided to avoid double execution
     if (preExecutionResult) {
@@ -27,10 +26,7 @@ export async function gradeCode(
       actualOutput = preExecutionResult.output;
     } else {
       // Execute code to get output (fallback if no pre-execution result)
-      const executionResult = await runner.runSnippet({
-        code,
-        input,
-      });
+      const executionResult = await runner.runSnippet(code);
 
       if (executionResult.error) {
         return {
@@ -62,7 +58,7 @@ export async function gradeCode(
 
       // Check if this test uses rule-based grading
       if (test.mode === 'rules' && (test.astRules || test.runtimeRules)) {
-        const gradeResult = await gradeWithRules(code, test, actualOutput, pyodide, input);
+        const gradeResult = await gradeWithRules(code, test, actualOutput, input);
         testResults.push({
           testIndex: i,
           passed: gradeResult.passed,
@@ -128,7 +124,6 @@ async function gradeWithRules(
   code: string,
   test: TestSpec,
   actualOutput: string,
-  pyodide: any,
   input?: string
 ): Promise<{ passed: boolean; feedback: string }> {
   try {
@@ -139,14 +134,18 @@ async function gradeWithRules(
 
     // Validate AST if rules provided
     let astResult = { passed: true, errors: [] as string[] };
-    if (test.astRules && test.astRules.length > 0) {
-      astResult = await validateAst(code, test.astRules, pyodide);
+    if (test.astRules) {
+      // Handle both array and object formats for astRules
+      const rules = Array.isArray(test.astRules) ? test.astRules : [test.astRules];
+      astResult = await validateAst(code, rules);
     }
 
     // Validate runtime if rules provided
     let runtimeResult = { passed: true, errors: [] as string[] };
-    if (test.runtimeRules && test.runtimeRules.length > 0) {
-      runtimeResult = await validateRuntime(actualOutput, test.runtimeRules, input);
+    if (test.runtimeRules) {
+      // Handle both array and object formats for runtimeRules
+      const rules = Array.isArray(test.runtimeRules) ? test.runtimeRules : [test.runtimeRules];
+      runtimeResult = await validateRuntime(actualOutput, rules as any, input);
     }
 
     const overallPassed = astResult.passed && runtimeResult.passed;

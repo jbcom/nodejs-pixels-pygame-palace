@@ -29,11 +29,10 @@ import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { type GradingContext, gradeCode } from '@/lib/grading';
 import {
-  createPythonRunner,
-  type ExecutionContext,
+  createTypeScriptRunner,
   type ExecutionResult,
-  type PythonRunner,
-} from '@/lib/python/runner';
+  type TypeScriptRunner,
+} from '@/lib/typescript-runner';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 
 // Pixel's conversational dialogues for different situations
@@ -101,24 +100,8 @@ export default function LessonEnhanced() {
     actualOutput?: string;
   } | null>(null);
 
-  // Pyodide temporarily disabled
-  const pyodide = null;
-  const pyodideLoading = false;
-  const pyodideError = null;
-  const executeWithEnhancedErrors = async (
-    code: string,
-    context: ExecutionContext
-  ): Promise<ExecutionResult> => ({ output: '', hasError: false });
-  const isEnhancedReady = false;
-
-  // Create PythonRunner instance when pyodide is ready
-  const pythonRunner = useMemo(() => {
-    if (!pyodide) return null;
-    return createPythonRunner(pyodide, {
-      executeWithEnhancedErrors,
-      isEnhancedReady,
-    });
-  }, [pyodide, executeWithEnhancedErrors, isEnhancedReady]);
+  // Create TypeScriptRunner instance
+  const typescriptRunner = useMemo(() => createTypeScriptRunner(), []);
 
   const { data: lesson, isLoading: lessonLoading } = useQuery<Lesson>({
     queryKey: ['/api/lessons', lessonId],
@@ -169,7 +152,7 @@ export default function LessonEnhanced() {
   }, [currentStepIndex, currentStep]);
 
   const executeCode = async (inputValues: string = '', runAutoGrading = false) => {
-    if (!pythonRunner || !code.trim()) {
+    if (!typescriptRunner || !code.trim()) {
       setPixelDialogue("Let's add some code first! You can do it! 💪");
       setPixelImage(pixelEncouraging);
       return;
@@ -180,10 +163,7 @@ export default function LessonEnhanced() {
     setGradingResult(null);
 
     try {
-      const result = await pythonRunner.runSnippet({
-        code,
-        input: inputValues,
-      });
+      const result = await typescriptRunner.runSnippet(code);
 
       if (result.error) {
         setError(result.error);
@@ -210,11 +190,10 @@ export default function LessonEnhanced() {
             code,
             step: currentStep,
             input: inputValues,
-            runner: pythonRunner,
-            pyodide,
+            runner: typescriptRunner as any, // Ad-hoc casting for now
           };
 
-          const gradeResult = await gradeCode(gradingContext, result);
+          const gradeResult = await gradeCode(gradingContext, result as any);
           setGradingResult({
             passed: gradeResult.passed,
             feedback: gradeResult.feedback,

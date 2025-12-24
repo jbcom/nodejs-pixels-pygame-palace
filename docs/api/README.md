@@ -53,7 +53,20 @@ interface Lesson {
   title: string;
   description: string;
   order: number;
-  content: LessonContent;
+  content: {
+    introduction: string;
+    steps: Step[];
+  };
+}
+
+interface Step {
+  id: string;
+  title: string;
+  description: string;
+  initialCode: string;
+  solution: string;
+  hints: string[];
+  tests?: any[];
 }
 
 // Progress tracking
