@@ -19,7 +19,7 @@ import { generateTestCode } from '@/components/pygame-code-generator';
 
 declare global {
   interface Window {
-    loadPyodide?: () => Promise<any>;
+    loadPyodide: any;
   }
 }
 

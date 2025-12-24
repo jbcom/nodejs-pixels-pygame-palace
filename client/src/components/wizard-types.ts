@@ -19,6 +19,7 @@ export interface WizardNode {
     gameType: Record<string, string>;
   };
   speaker?: string;
+  character?: string;
   multiStep?: string[];
   options?: WizardOption[];
   action?: string; // Can be 'openWYSIWYGEditor', 'openEditor', 'openLessons', 'showAssets', 'minimizePixel'
@@ -62,6 +63,7 @@ export interface WizardOption {
   previewComment?: string;
   action?: string; // Option can also have an action
   actionParams?: Record<string, any>;
+  params?: Record<string, any>;
 }
 
 // Session Actions for tracking user progress
@@ -84,10 +86,10 @@ export interface SessionActions {
   gameAssembled?: boolean;
   selectedComponents?: Record<string, string>; // componentId -> variant (A or B)
   compiledScenes?: Record<string, boolean>; // scene -> compiled status
-  selectedGameType?: string; // The specific game type (platformer, rpg, racing, dungeon, etc.)
+  selectedGameType?: string | null; // The specific game type (platformer, rpg, racing, dungeon, etc.)
   transitionToSpecializedFlow?: boolean; // Flag to track when we need to transition to specialized flow
-  gameName?: string; // The name of the game being created
-  selectedBundles?: Record<string, any>; // Bundle selections for components
+  gameName?: string | null; // The name of the game being created
+  selectedBundles?: Record<string, any> | null; // Bundle selections for components
 }
 
 // Session action for PixelMenu

@@ -16,7 +16,13 @@ import { cn } from '@/lib/utils';
 // Pyodide removed - new pygame component system coming
 import { useToast } from '@/hooks/use-toast';
 import type { Entity, Scene, GameConfig } from '@shared/schema';
-import type { DraggableAsset } from './draggable-asset-library';
+
+interface DraggableAsset {
+  id: string;
+  name: string;
+  type: string;
+  defaultProperties?: Record<string, any>;
+}
 
 interface InteractiveGameCanvasProps {
   gameConfig: GameConfig;

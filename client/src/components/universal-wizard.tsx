@@ -966,7 +966,7 @@ export default function UniversalWizard({
         onPixelMenuAction={handlePixelMenuAction}
         renderDialogue={renderDialogue}
         showProgressSidebar={flowType === 'game-dev' || !!sessionActions.gameType}
-        gameName={sessionActions.gameName}
+        gameName={sessionActions.gameName || undefined}
       />
       {uiState.embeddedComponent === 'code-editor' && (
         <WizardCodeRunner

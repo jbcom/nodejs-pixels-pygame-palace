@@ -73,7 +73,7 @@ export default function AssetBrowserWizard({
     const filter: AssetFilter = {
       search: searchQuery || undefined,
       type: selectedTab === 'all' ? undefined : selectedTab as AssetType,
-      category: selectedCategory === 'all' ? undefined : selectedCategory
+      category: selectedCategory === 'all' ? undefined : selectedCategory as any
     };
 
     if (assetType) {
@@ -87,7 +87,7 @@ export default function AssetBrowserWizard({
   const categories = useMemo(() => {
     const cats = new Set<string>();
     filteredAssets.forEach(asset => {
-      if ('category' in asset) {
+      if ('category' in asset && asset.category) {
         cats.add(asset.category);
       }
     });
@@ -234,7 +234,7 @@ export default function AssetBrowserWizard({
                 </p>
               )}
               <div className="flex flex-wrap gap-1">
-                {asset.tags.slice(0, 3).map(tag => (
+                {asset.tags.slice(0, 3).map((tag: string) => (
                   <Badge key={tag} variant="secondary" className="text-xs">
                     {tag}
                   </Badge>

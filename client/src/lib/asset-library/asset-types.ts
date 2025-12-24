@@ -35,13 +35,17 @@ export type BackgroundCategory =
   | 'desert'
   | 'dungeon'
   | 'abstract'
-  | 'solid';
+  | 'solid'
+  | 'misc'
+  | 'tiles'
+  | 'enemies'
+  | 'backgrounds';
 
 // Base asset interface
 export interface BaseAsset {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   type: AssetType;
   path: string;
   thumbnail?: string;
@@ -73,7 +77,7 @@ export interface SpriteAsset extends BaseAsset {
 // Sound asset interface
 export interface SoundAsset extends BaseAsset {
   type: 'sound' | 'music';
-  category: SoundCategory;
+  category?: SoundCategory;
   duration?: number;
   loop?: boolean;
   volume?: number;

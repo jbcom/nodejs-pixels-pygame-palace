@@ -3,6 +3,7 @@
 export interface User {
   id: string;
   username: string;
+  password?: string;
 }
 
 export interface Lesson {
@@ -10,10 +11,10 @@ export interface Lesson {
   title: string;
   description: string;
   order: number;
-  intro?: string;
-  learningObjectives?: string[];
-  goalDescription?: string;
-  previewCode?: string;
+  intro?: string | null;
+  learningObjectives?: string[] | null;
+  goalDescription?: string | null;
+  previewCode?: string | null;
   content: {
     introduction: string;
     steps: Array<{
@@ -56,9 +57,9 @@ export interface Lesson {
       };
     }>;
   };
-  prerequisites?: string[];
-  difficulty?: string;
-  estimatedTime?: number;
+  prerequisites?: string[] | null;
+  difficulty?: string | null;
+  estimatedTime?: number | null;
 }
 
 export interface UserProgress {
@@ -67,7 +68,7 @@ export interface UserProgress {
   lessonId: string;
   currentStep: number;
   completed: boolean;
-  code?: string;
+  code?: string | null;
 }
 
 export interface Project {
@@ -75,11 +76,11 @@ export interface Project {
   userId: string;
   name: string;
   template: string;
-  description?: string;
+  description?: string | null;
   published: boolean;
   createdAt: Date;
-  publishedAt?: Date;
-  thumbnailDataUrl?: string;
+  publishedAt?: Date | null;
+  thumbnailDataUrl?: string | null;
   files: Array<{
     path: string;
     content: string;

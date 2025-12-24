@@ -156,7 +156,6 @@ export class ClientStorage {
       id: this.generateId(),
       createdAt: new Date(),
       publishedAt: null,
-      published: false,
       ...project,
       description: project.description ?? null
     };
