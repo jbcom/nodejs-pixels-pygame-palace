@@ -37,7 +37,7 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
-    "docs": "typedoc --out docs/api src"
+    "docs": "typedoc --out docs/api client/src shared server"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
