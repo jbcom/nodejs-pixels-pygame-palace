@@ -317,7 +317,7 @@ export default function LessonEnhanced() {
     }
   };
 
-  if (lessonLoading || pyodideLoading) {
+  if (lessonLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 dark:from-gray-900 dark:via-purple-900/10 dark:to-pink-900/10 flex items-center justify-center">
         <div className="text-center">
@@ -329,7 +329,7 @@ export default function LessonEnhanced() {
             transition={{ duration: 2, repeat: Infinity }}
           />
           <p className="text-purple-600 dark:text-purple-400">
-            {pyodideLoading ? 'Setting up TypeScript for you...' : 'Loading your lesson...'}
+            Loading your lesson...
           </p>
         </div>
       </div>
@@ -520,7 +520,7 @@ export default function LessonEnhanced() {
                   onExecute={executeCode}
                   output={output}
                   error={error}
-                  isExecuting={pyodideLoading}
+                  isExecuting={false}
                   gradingResult={gradingResult}
                   currentStep={currentStep}
                 />
@@ -531,7 +531,7 @@ export default function LessonEnhanced() {
                 <Button
                   onClick={() => executeCode(undefined, false)}
                   className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
-                  disabled={!pythonRunner}
+                  disabled={!typescriptRunner}
                 >
                   <Zap className="w-4 h-4 mr-2" />
                   Run Code
@@ -540,7 +540,7 @@ export default function LessonEnhanced() {
                 <Button
                   onClick={() => executeCode(undefined, true)}
                   className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-                  disabled={!pythonRunner || !currentStep?.tests}
+                  disabled={!typescriptRunner || !currentStep?.tests}
                 >
                   <Code2 className="w-4 h-4 mr-2" />
                   Check Solution
