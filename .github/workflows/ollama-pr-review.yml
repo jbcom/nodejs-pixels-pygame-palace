@@ -48,15 +48,19 @@ jobs:
     
     steps:
       - name: Check required secrets
+        id: check-secrets
         env:
           OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
         run: |
           if [[ -z "$OLLAMA_API_KEY" ]]; then
-            echo "::error::OLLAMA_API_KEY secret is not configured"
-            exit 1
+            echo "::warning::OLLAMA_API_KEY secret is not configured"
+            echo "has_secret=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_secret=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Checkout repository
+        if: steps.check-secrets.outputs.has_secret == 'true'
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           fetch-depth: 0
@@ -65,12 +69,14 @@ jobs:
           token: ${{ secrets.CI_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Get PR diff
+        if: steps.check-secrets.outputs.has_secret == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr diff ${{ github.event.pull_request.number }} --color=never > /tmp/pr_diff.txt
 
       - name: Generate structured review
+        if: steps.check-secrets.outputs.has_secret == 'true'
         id: review
         env:
           OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
@@ -611,15 +617,19 @@ jobs:
     
     steps:
       - name: Check required secrets
+        id: check-secrets
         env:
           OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
         run: |
           if [[ -z "$OLLAMA_API_KEY" ]]; then
-            echo "::error::OLLAMA_API_KEY secret is not configured"
-            exit 1
+            echo "::warning::OLLAMA_API_KEY secret is not configured"
+            echo "has_secret=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_secret=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Checkout repository
+        if: steps.check-secrets.outputs.has_secret == 'true'
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           fetch-depth: 0
