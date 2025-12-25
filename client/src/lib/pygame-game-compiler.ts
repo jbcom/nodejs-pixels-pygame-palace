@@ -9,7 +9,7 @@ export function compileStrataGame(
   selectedAssets: GameAsset[]
 ): string {
   
-  const imports = `import { strata } from 'strata';\n\n// Initialize Strata\nstrata.init();\n\n// Constants\nconst SCREEN_WIDTH = 800;\nconst SCREEN_HEIGHT = 600;\nconst FPS = 60;\nconst GRAVITY = 0.5;\n`;
+  const imports = `import { strata } from './pygame-simulation';\n\n// Initialize Strata\nstrata.init();\n\n// Constants\nconst SCREEN_WIDTH = 800;\nconst SCREEN_HEIGHT = 600;\nconst FPS = 60;\nconst GRAVITY = 0.5;\n`;
 
   const assetLoader = generateAssetLoader(selectedAssets);
   

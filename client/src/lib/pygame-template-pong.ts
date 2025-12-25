@@ -110,7 +110,7 @@ export const pongTemplate: GameTemplate = {
     ctx.fillText('0', ctx.canvas.width / 2 - 50, 50);
     ctx.fillText('0', ctx.canvas.width / 2 + 50, 50);
   },
-  generateCode: () => `import { strata } from 'strata';
+  generateCode: () => `import { strata } from './pygame-simulation';
 
 // Initialize Strata
 strata.init();

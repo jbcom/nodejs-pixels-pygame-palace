@@ -751,6 +751,14 @@ export const strata = {
   K_UP: 273,
   K_DOWN: 274,
   K_SPACE: 32,
+  K_w: 119,
+  K_a: 97,
+  K_s: 115,
+  K_d: 100,
+  K_r: 114,
+  K_ESCAPE: 27,
+  K_RETURN: 13,
+  K_p: 112,
   
   // Rect constructor
   Rect: PygameRect

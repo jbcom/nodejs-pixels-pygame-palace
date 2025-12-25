@@ -120,7 +120,7 @@ export const platformerTemplate: GameTemplate = {
     ctx.arc(490, 230, 15, 0, Math.PI * 2);
     ctx.fill();
   },
-  generateCode: () => `import { strata } from 'strata';
+  generateCode: () => `import { strata } from './pygame-simulation';
 
 // Initialize Strata
 strata.init();

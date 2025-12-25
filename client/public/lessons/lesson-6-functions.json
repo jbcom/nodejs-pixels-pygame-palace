@@ -96,7 +96,7 @@
       "id": "arrowFunctions",
       "speaker": "Pixel",
       "text": "TypeScript has a shorter way to write functions called 'Arrow Functions'. They're super popular!",
-      "codeExample": "// Regular function\nfunction double(x) {\n    return x * 2;\n}\n\n// Arrow function - same thing!\nconst doubleArrow = (x) => x * 2;\n\nconsole.log(doubleArrow(5)); // 10",
+      "codeExample": "// Regular function\nfunction double(x) {\n    return x * 2;\n}\n\n// Arrow function - a modern shortcut!\nconst doubleArrow = (x) => x * 2;\n\nconsole.log(doubleArrow(5)); // 10",
       "followUp": "They're great for quick, one-line operations and look really modern!",
       "options": [
         {

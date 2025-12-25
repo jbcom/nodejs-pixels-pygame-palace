@@ -139,7 +139,7 @@
       "id": "sortArray",
       "speaker": "Pixel",
       "text": "Sorting is perfect for leaderboards and organizing inventory!",
-      "codeExample": "// High scores\nlet scores = [500, 1200, 300, 950, 750];\nscores.sort((a, b) => a - b); // Sorts smallest to largest\nconsole.log(scores);\n\n// Reverse sort (largest first)\nscores.sort((a, b) => b - a);\nconsole.log(scores); // [1200, 950, 750, 500, 300]",
+      "codeExample": "// High scores\nlet scores = [500, 1200, 300, 950, 750];\nscores.sort((a, b) => a - b); // Sorts smallest to largest\nconsole.log(scores); // [300, 500, 750, 950, 1200]\n\n// Reverse sort (largest first)\nscores.sort((a, b) => b - a);\nconsole.log(scores); // [1200, 950, 750, 500, 300]",
       "followUp": "sort() changes the array itself. For numbers, we give it a little helper function to get the order right!",
       "options": [
         {
