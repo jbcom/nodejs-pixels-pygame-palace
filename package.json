@@ -5,9 +5,9 @@
   "author": "Jon Bogaty",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jbcom/nodejs-strata-typescript-tutor.git"
+    "url": "https://github.com/strata-game-library/typescript-tutor.git"
   },
-  "homepage": "https://typescript-tutor.strata.dev",
+  "homepage": "https://strata.game/tutor",
   "keywords": [
     "typescript",
     "education",
